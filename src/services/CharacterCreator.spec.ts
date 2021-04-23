@@ -1,4 +1,4 @@
-import { Skill } from './character.interface'
+import { Character, Skill } from './character.interface'
 import CharacterCreator from './CharacterCreator'
 
 describe('CharacterCreator', () => {
@@ -114,22 +114,8 @@ describe('CharacterCreator', () => {
     skill: string,
     { from, to, skillPoints }: ExpectSkillProps
   ) {
-    const initialProps = {
-      skillPoints: skillPoints.from,
-      health: 0,
-      attack: 0,
-      defense: 0,
-      magic: 0,
-    }
-    const character = characterCreator.increment(skill as Skill, {
-      ...initialProps,
-      [skill]: from,
-    })
-
-    expect(character).toEqual({
-      ...initialProps,
-      skillPoints: skillPoints.to,
-      [skill]: to,
+    customExpectSkill(skill, { from, to, skillPoints }, (initialCharacter) => {
+      return characterCreator.increment(skill as Skill, initialCharacter)
     })
   }
 
@@ -137,20 +123,28 @@ describe('CharacterCreator', () => {
     skill: string,
     { from, to, skillPoints }: ExpectSkillProps
   ) {
-    const initialProps = {
+    customExpectSkill(skill, { from, to, skillPoints }, (initialCharacter) => {
+      return characterCreator.decrement(skill as Skill, initialCharacter)
+    })
+  }
+
+  function customExpectSkill(
+    skill: string,
+    { from, to, skillPoints }: ExpectSkillProps,
+    act: (initialCharacter: Character) => Character
+  ) {
+    const initialCharacter = {
       skillPoints: skillPoints.from,
       health: 0,
       attack: 0,
       defense: 0,
       magic: 0,
     }
-    const character = characterCreator.decrement(skill as Skill, {
-      ...initialProps,
-      [skill]: from,
-    })
+
+    const character = act({ ...initialCharacter, [skill]: from })
 
     expect(character).toEqual({
-      ...initialProps,
+      ...initialCharacter,
       skillPoints: skillPoints.to,
       [skill]: to,
     })
