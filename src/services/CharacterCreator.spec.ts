@@ -1,0 +1,158 @@
+import { Skill } from './character.interface'
+import CharacterCreator from './CharacterCreator'
+
+describe('CharacterCreator', () => {
+  let characterCreator: CharacterCreator
+
+  beforeEach(() => {
+    characterCreator = new CharacterCreator()
+  })
+
+  describe('create character', () => {
+    it('should return a character with default skill points', () => {
+      expect(characterCreator.createCharacter()).toEqual({
+        skillPoints: 12,
+        health: 10,
+        attack: 0,
+        defense: 0,
+        magic: 0,
+      })
+    })
+  })
+
+  describe('increment skills', () => {
+    for (const skill of ['health', 'attack', 'defense', 'magic']) {
+      it(`should increment the ${skill} of 1 and consume 1 skill point`, () => {
+        expectIncrementSkill(skill, {
+          from: 0,
+          to: 1,
+          skillPoints: { from: 12, to: 11 },
+        })
+      })
+    }
+
+    for (const skill of ['health', 'attack', 'defense', 'magic']) {
+      it(`should not increment the ${skill} if there are no more skill points`, () => {
+        expectIncrementSkill(skill, {
+          from: 0,
+          to: 0,
+          skillPoints: { from: 0, to: 0 },
+        })
+      })
+    }
+
+    for (const skill of ['attack', 'defense', 'magic']) {
+      it(`should increment the ${skill} of 1 and consume 2 skill points`, () => {
+        expectIncrementSkill(skill, {
+          from: 10,
+          to: 11,
+          skillPoints: { from: 12, to: 10 },
+        })
+      })
+    }
+
+    for (const skill of ['attack', 'defense', 'magic']) {
+      it(`should increment the ${skill} of 1 and consume 3 skill points`, () => {
+        expectIncrementSkill(skill, {
+          from: 15,
+          to: 16,
+          skillPoints: { from: 12, to: 9 },
+        })
+      })
+    }
+
+    for (const skill of ['attack', 'defense', 'magic']) {
+      it(`should not increment the ${skill} of 1 if not enough skill points`, () => {
+        expectIncrementSkill(skill, {
+          from: 15,
+          to: 15,
+          skillPoints: { from: 2, to: 2 },
+        })
+      })
+    }
+  })
+
+  describe('decrement skills', () => {
+    for (const skill of ['health', 'attack', 'defense', 'magic']) {
+      it(`should decrement the ${skill} of 1 and refund 1 skill point`, () => {
+        expectDecrementSkill(skill, {
+          from: 1,
+          to: 0,
+          skillPoints: { from: 11, to: 12 },
+        })
+      })
+    }
+
+    for (const skill of ['health', 'attack', 'defense', 'magic']) {
+      it(`should not decrement the ${skill} if is already at 0`, () => {
+        expectDecrementSkill(skill, {
+          from: 0,
+          to: 0,
+          skillPoints: { from: 12, to: 12 },
+        })
+      })
+    }
+
+    for (const skill of ['attack', 'defense', 'magic']) {
+      it(`should decrement the ${skill} of 1 and refund 2 skill point`, () => {
+        expectDecrementSkill(skill, {
+          from: 11,
+          to: 10,
+          skillPoints: { from: 10, to: 12 },
+        })
+      })
+    }
+  })
+
+  interface ExpectSkillProps {
+    from: number
+    to: number
+    skillPoints: { from: number; to: number }
+  }
+
+  function expectIncrementSkill(
+    skill: string,
+    { from, to, skillPoints }: ExpectSkillProps
+  ) {
+    const initialProps = {
+      skillPoints: skillPoints.from,
+      health: 10,
+      attack: 0,
+      defense: 0,
+      magic: 0,
+    }
+    const character = characterCreator.increment(skill as Skill, {
+      ...initialProps,
+      [skill]: from,
+    })
+
+    expect(character).toEqual({
+      ...initialProps,
+      skillPoints: skillPoints.to,
+      [skill]: to,
+    })
+  }
+
+  function expectDecrementSkill(
+    skill: string,
+    { from, to, skillPoints }: ExpectSkillProps
+  ) {
+    const initialProps = {
+      skillPoints: skillPoints.from,
+      health: 10,
+      attack: 0,
+      defense: 0,
+      magic: 0,
+    }
+    const character = characterCreator.decrement(skill as Skill, {
+      ...initialProps,
+      [skill]: from,
+    })
+
+    expect(character).toEqual({
+      ...initialProps,
+      skillPoints: skillPoints.to,
+      [skill]: to,
+    })
+  }
+})
