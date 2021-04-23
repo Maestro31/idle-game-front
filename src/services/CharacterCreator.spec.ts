@@ -116,7 +116,7 @@ describe('CharacterCreator', () => {
   ) {
     const initialProps = {
       skillPoints: skillPoints.from,
-      health: 10,
+      health: 0,
       attack: 0,
       defense: 0,
       magic: 0,
@@ -139,7 +139,7 @@ describe('CharacterCreator', () => {
   ) {
     const initialProps = {
       skillPoints: skillPoints.from,
-      health: 10,
+      health: 0,
       attack: 0,
       defense: 0,
       magic: 0,
