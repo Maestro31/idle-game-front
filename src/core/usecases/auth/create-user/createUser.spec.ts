@@ -1,5 +1,5 @@
-import InMemoryAuthGateway from '../../../adapters/secondary/auth/InMemoryAuthGateway'
-import { configureStore, ReduxStore } from '../../../redux/configureStore'
+import InMemoryAuthGateway from '../../../../adapters/secondary/auth/InMemoryAuthGateway'
+import { configureStore, ReduxStore } from '../../../../redux/configureStore'
 import { createUser } from './createUser'
 
 describe('Create User', () => {

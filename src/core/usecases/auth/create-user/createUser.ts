@@ -1,5 +1,5 @@
-import { ThunkResult } from '../../../redux/configureStore'
-import { UserProps } from '../../models/User'
+import { ThunkResult } from '../../../../redux/configureStore'
+import { UserProps } from '../../../models/User'
 
 export const createUser = (
   userProps: UserProps

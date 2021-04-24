@@ -4,7 +4,6 @@ export interface AppState {
 
 export interface AuthState {
   user: User | null
-  authToken: string | null
 }
 
 export interface User {

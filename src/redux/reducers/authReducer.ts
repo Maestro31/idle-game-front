@@ -1,21 +1,22 @@
-import { Actions } from '../../core/usecases/login-user/actionCreators'
+import { AuthActions } from '../../core/usecases/auth/actionCreators'
 import { AuthState } from '../appState.interface'
 
 const initialState: AuthState = {
   user: null,
-  authToken: null,
 }
 
-const auth = (state: AuthState = initialState, action: Actions) => {
-  if (action.type === 'USER_AUTHENTICATED') {
-    return {
-      ...state,
-      user: action.payload.user,
-      authToken: action.payload.authToken,
-    }
+const auth = (state: AuthState = initialState, action: AuthActions) => {
+  switch (action.type) {
+    case 'USER_AUTHENTICATED':
+      return {
+        ...state,
+        user: action.payload.user,
+      }
+    case 'USER_LOGOUT':
+      return { user: null }
+    default:
+      return state
   }
-
-  return state
 }
 
 export default auth
