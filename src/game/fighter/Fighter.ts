@@ -7,16 +7,16 @@ export class Fighter {
     this.remainingHealth = character.health
   }
 
-  getAttack() {
+  getCharacter(): Character {
+    return this.character
+  }
+
+  getAttack(): number {
     return this.character.attack
   }
 
-  getDefense() {
+  getDefense(): number {
     return this.character.defense
-  }
-
-  getCharacter(): Character {
-    return this.character
   }
 
   getRemainingHealth() {
@@ -33,7 +33,7 @@ export class Fighter {
       opponent
     )
 
-    if (this.character.magic === damageToInflict) {
+    if (this.canInflictMagicDamage(damageToInflict)) {
       damageToInflict += this.character.magic
     }
 
@@ -56,5 +56,9 @@ export class Fighter {
     opponent: Fighter
   ): number {
     return attackToInflict - opponent.getDefense()
+  }
+
+  private canInflictMagicDamage(damageToInflict: number): boolean {
+    return this.character.magic === damageToInflict
   }
 }

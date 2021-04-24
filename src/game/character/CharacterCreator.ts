@@ -1,8 +1,9 @@
 import { Character, Skill } from './character.interface'
 
 export default class CharacterCreator {
-  createCharacter(): Character {
+  createCharacter(name: string): Character {
     return {
+      name,
       skillPoints: 12,
       health: 10,
       attack: 0,

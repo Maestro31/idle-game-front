@@ -1,4 +1,4 @@
-import { RandomInterface } from './random.interface'
+import { RandomInterface } from './RandomInterface'
 
 export default class RandomStub implements RandomInterface {
   private nextValue: number

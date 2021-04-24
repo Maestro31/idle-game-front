@@ -1,4 +1,5 @@
 export interface Character {
+  name: string
   skillPoints: number
   health: number
   attack: number

@@ -3,6 +3,7 @@ import CharacterCreator from '../character/CharacterCreator'
 import RandomStub from '../services/RandomStub'
 import FighterStub from '../fighter/FighterStub'
 import { Fighter } from '../fighter/Fighter'
+import { AssaultLog } from '../game-logger/GameLoggerInterface'
 
 describe('Arena', () => {
   let arena: Arena
@@ -13,8 +14,8 @@ describe('Arena', () => {
   beforeEach(() => {
     const characterCreator = new CharacterCreator()
 
-    player = new FighterStub(characterCreator.createCharacter())
-    opponent = new FighterStub(characterCreator.createCharacter())
+    player = new FighterStub(characterCreator.createCharacter('David'))
+    opponent = new FighterStub(characterCreator.createCharacter('Goliath'))
 
     randomService = new RandomStub()
     arena = new Arena(player, opponent, randomService)
@@ -132,6 +133,32 @@ describe('Arena', () => {
 
       arena.startAssault()
       expect(callbackCalled).toBeTruthy()
+    })
+  })
+
+  describe('Log system', () => {
+    it('should notify when a log assault is created', () => {
+      let assaultLogCallbackCalled = false
+      arena.onAssaultLogCreated((assaultLog: AssaultLog) => {
+        expect(assaultLog).toEqual({
+          assailant: player.getCharacter(),
+          assailed: opponent.getCharacter(),
+          assaultResult: {
+            attack: 2,
+            damageTaken: 2,
+          },
+        })
+        assaultLogCallbackCalled = true
+      })
+
+      randomService.willRespond(2)
+
+      player.overrideCharacterWith({ attack: 5 })
+      opponent.overrideCharacterWith({ health: 2 })
+
+      arena.startAssault()
+
+      expect(assaultLogCallbackCalled).toBeTruthy()
     })
   })
 })

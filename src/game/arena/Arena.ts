@@ -1,5 +1,6 @@
 import { Fighter } from '../fighter/Fighter'
-import { RandomInterface } from '../services/random.interface'
+import { AssaultLog } from '../game-logger/GameLoggerInterface'
+import { RandomInterface } from '../services/RandomInterface'
 
 export class IllegalFightError extends Error {
   constructor() {
@@ -10,6 +11,9 @@ export class IllegalFightError extends Error {
 export default class Arena {
   private winner: Fighter | null = null
   private onFightEndedCallback: ((winner: Fighter) => void) | null = null
+  private onAssaultLogCreatedCallback:
+    | ((assaultLog: AssaultLog) => void)
+    | null = null
 
   constructor(
     private assailantFighter: Fighter,
@@ -39,10 +43,23 @@ export default class Arena {
     const assailantAttack = this.assailantFighter.getAttack()
     const attackToInflict = this.randomService.getValueUntil(assailantAttack)
 
+    const currentAssailedHealth = this.assailedFighter.getRemainingHealth()
+
     this.assailantFighter.attemptToInflictDamage(
       attackToInflict,
       this.assailedFighter
     )
+
+    const assailedRemainingHealth = this.assailedFighter.getRemainingHealth()
+
+    this.logAssault({
+      assailant: this.assailantFighter.getCharacter(),
+      assailed: this.assailedFighter.getCharacter(),
+      assaultResult: {
+        attack: attackToInflict,
+        damageTaken: currentAssailedHealth - assailedRemainingHealth,
+      },
+    })
 
     if (this.isAssailedFighterDead()) {
       this.winner = this.assailantFighter
@@ -58,7 +75,18 @@ export default class Arena {
     this.onFightEndedCallback = onFightEndedCallback
   }
 
+  onAssaultLogCreated(
+    onAssaultLogCreatedCallback: (assaultLog: AssaultLog) => void
+  ) {
+    this.onAssaultLogCreatedCallback = onAssaultLogCreatedCallback
+  }
+
   private isAssailedFighterDead(): boolean {
     return this.assailedFighter.getRemainingHealth() <= 0
+  }
+
+  private logAssault(assaultLog: AssaultLog): void {
+    this.onAssaultLogCreatedCallback &&
+      this.onAssaultLogCreatedCallback(assaultLog)
   }
 }
