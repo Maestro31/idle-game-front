@@ -36,39 +36,24 @@ export default class Arena {
   }
 
   startAssault(): void {
-    if (this.winner) {
-      throw new IllegalFightError()
-    }
+    this.guardIllegalFight()
 
     const assailantAttack = this.assailantFighter.getAttack()
     const attackToInflict = this.randomService.getValueUntil(assailantAttack)
 
-    const currentAssailedHealth = this.assailedFighter.getRemainingHealth()
+    const previousAssailedHealth = this.assailedFighter.getRemainingHealth()
 
     this.assailantFighter.attemptToInflictDamage(
       attackToInflict,
       this.assailedFighter
     )
 
-    const assailedRemainingHealth = this.assailedFighter.getRemainingHealth()
+    this.logAssault(
+      attackToInflict,
+      previousAssailedHealth - this.assailedFighter.getRemainingHealth()
+    )
 
-    this.logAssault({
-      assailant: this.assailantFighter.getCharacter(),
-      assailed: this.assailedFighter.getCharacter(),
-      assaultResult: {
-        attack: attackToInflict,
-        damageTaken: currentAssailedHealth - assailedRemainingHealth,
-      },
-    })
-
-    if (this.isAssailedFighterDead()) {
-      this.winner = this.assailantFighter
-      this.onFightEndedCallback && this.onFightEndedCallback(this.winner)
-    }
-  }
-
-  getWinner() {
-    return this.winner
+    this.checkEndCondition()
   }
 
   onFightEnded(onFightEndedCallback: (winner: Fighter) => void) {
@@ -85,8 +70,32 @@ export default class Arena {
     return this.assailedFighter.getRemainingHealth() <= 0
   }
 
-  private logAssault(assaultLog: AssaultLog): void {
+  private logAssault(attackToInflict: number, damageTaken: number): void {
     this.onAssaultLogCreatedCallback &&
-      this.onAssaultLogCreatedCallback(assaultLog)
+      this.onAssaultLogCreatedCallback({
+        assailant: this.assailantFighter.getCharacter(),
+        assailed: this.assailedFighter.getCharacter(),
+        assaultResult: {
+          attack: attackToInflict,
+          damageTaken: damageTaken,
+        },
+      })
+  }
+
+  private guardIllegalFight() {
+    if (this.winner) {
+      throw new IllegalFightError()
+    }
+  }
+
+  private checkEndCondition() {
+    if (this.isAssailedFighterDead()) {
+      this.winner = this.assailantFighter
+      this.notifyWinner(this.winner)
+    }
+  }
+
+  private notifyWinner(winner: Fighter) {
+    this.onFightEndedCallback && this.onFightEndedCallback(winner)
   }
 }

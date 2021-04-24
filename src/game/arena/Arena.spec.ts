@@ -89,10 +89,11 @@ describe('Arena', () => {
       player.overrideCharacterWith({ attack: 5 })
       opponent.overrideCharacterWith({ health: 1, defense: 1 })
 
+      arena.onFightEnded((winner: Fighter) => expect(winner).toBe(player))
+
       arena.startAssault()
 
       expect(opponent.getRemainingHealth()).toBe(0)
-      expect(arena.getWinner()).toBe(player)
     })
 
     it('should declare the opponent as the winner if the player is dead', () => {
@@ -101,11 +102,12 @@ describe('Arena', () => {
       player.overrideCharacterWith({ health: 1, defense: 1 })
       opponent.overrideCharacterWith({ attack: 5 })
 
+      arena.onFightEnded((winner: Fighter) => expect(winner).toBe(opponent))
+
       arena.nextTurn()
       arena.startAssault()
 
       expect(player.getRemainingHealth()).toBe(0)
-      expect(arena.getWinner()).toBe(opponent)
     })
 
     it('should not permit a fight if a fighter is dead', () => {

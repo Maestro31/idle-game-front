@@ -21,6 +21,8 @@ describe('Create User', () => {
       })
     )
 
-    expect(authGateway.isUserRegistered()).toBeTruthy()
+    expect(
+      authGateway.getUser('jack.skellington@halloween.com', 'jackh@lloween')
+    ).toBeDefined()
   })
 })

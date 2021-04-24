@@ -9,10 +9,13 @@ import thunk, { ThunkAction, ThunkDispatch, ThunkMiddleware } from 'redux-thunk'
 import { AppState } from './appState.interface'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { Dependencies } from '../dependencies'
+import auth from './reducers/authReducer'
 
 export const configureStore = (dependencies: Partial<Dependencies>) =>
   createStore(
-    combineReducers({}),
+    combineReducers({
+      auth,
+    }),
     composeWithDevTools(
       applyMiddleware(
         dependencies
