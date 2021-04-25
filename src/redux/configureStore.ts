@@ -10,11 +10,13 @@ import { AppState } from './appState.interface'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { Dependencies } from '../dependencies'
 import auth from './reducers/authReducer'
+import character from './reducers/characterReducer'
 
 export const configureStore = (dependencies: Partial<Dependencies>) =>
   createStore(
     combineReducers({
       auth,
+      character,
     }),
     composeWithDevTools(
       applyMiddleware(

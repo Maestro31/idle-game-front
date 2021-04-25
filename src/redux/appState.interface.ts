@@ -1,5 +1,10 @@
+import { CharacterProps } from '../game/character/character.interface'
+
 export interface AppState {
   auth: AuthState
+  character: {
+    byId: CharactersById
+  }
 }
 
 export interface AuthState {
@@ -11,3 +16,14 @@ export interface User {
   lastname: string
   email: string
 }
+
+export interface CharactersById {
+  [key: string]: Character
+}
+
+export interface Character {
+  id: CharacterId
+  properties: CharacterProps
+}
+
+type CharacterId = string

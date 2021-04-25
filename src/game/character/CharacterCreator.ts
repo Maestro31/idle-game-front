@@ -1,7 +1,7 @@
-import { Character, Skill } from './character.interface'
+import { CharacterProps, Skill } from './character.interface'
 
 export default class CharacterCreator {
-  createCharacter(name: string): Character {
+  createCharacterProps(name: string): CharacterProps {
     return {
       name,
       skillPoints: 12,
@@ -12,7 +12,7 @@ export default class CharacterCreator {
     }
   }
 
-  increment(skill: Skill, character: Character): Character {
+  increment(skill: Skill, character: CharacterProps): CharacterProps {
     const { skillPoints } = character
 
     if (this.hasNotEnoughSkillPoints(skill, character)) {
@@ -26,7 +26,7 @@ export default class CharacterCreator {
     }
   }
 
-  decrement(skill: Skill, character: Character): Character {
+  decrement(skill: Skill, character: CharacterProps): CharacterProps {
     const { skillPoints } = character
 
     if (this.cannotBeDecremented(character[skill])) {
@@ -40,7 +40,10 @@ export default class CharacterCreator {
     }
   }
 
-  private hasNotEnoughSkillPoints(skill: Skill, character: Character): boolean {
+  private hasNotEnoughSkillPoints(
+    skill: Skill,
+    character: CharacterProps
+  ): boolean {
     return character.skillPoints < this.calculateCost(skill, character[skill])
   }
 

@@ -1,8 +1,8 @@
-import { Character } from '../character/character.interface'
+import { CharacterProps } from '../character/character.interface'
 
 export interface AssaultLog {
-  assailant: Character
-  assailed: Character
+  assailant: CharacterProps
+  assailed: CharacterProps
   assaultResult: {
     attack: number
     damageTaken: number

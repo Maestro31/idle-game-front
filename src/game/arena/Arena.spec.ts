@@ -14,8 +14,8 @@ describe('Arena', () => {
   beforeEach(() => {
     const characterCreator = new CharacterCreator()
 
-    player = new FighterStub(characterCreator.createCharacter('David'))
-    opponent = new FighterStub(characterCreator.createCharacter('Goliath'))
+    player = new FighterStub(characterCreator.createCharacterProps('David'))
+    opponent = new FighterStub(characterCreator.createCharacterProps('Goliath'))
 
     randomService = new RandomStub()
     arena = new Arena(player, opponent, randomService)

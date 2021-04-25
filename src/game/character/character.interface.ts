@@ -1,4 +1,4 @@
-export interface Character {
+export interface CharacterProps {
   name: string
   skillPoints: number
   health: number

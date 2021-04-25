@@ -1,5 +1,6 @@
 import InMemoryAuthGateway from '../../../../adapters/secondary/auth/InMemoryAuthGateway'
 import InMemoryLocalStorage from '../../../../adapters/secondary/storage/InMemoryLocalStorage'
+import { AppState } from '../../../../redux/appState.interface'
 import { configureStore, ReduxStore } from '../../../../redux/configureStore'
 import { refreshUser } from './refreshUser'
 
@@ -7,11 +8,13 @@ describe('Refresh user', () => {
   let store: ReduxStore
   let authGateway: InMemoryAuthGateway
   let localStorageService: InMemoryLocalStorage
+  let initialState: AppState
 
   beforeEach(() => {
     authGateway = new InMemoryAuthGateway()
     localStorageService = new InMemoryLocalStorage()
     store = configureStore({ authGateway, localStorageService })
+    initialState = store.getState()
   })
 
   it('should refresh login with auth token', async () => {
@@ -28,11 +31,11 @@ describe('Refresh user', () => {
 
     await store.dispatch(refreshUser)
 
-    expect(store.getState()).toEqual({ auth: { user } })
+    expect(store.getState()).toEqual({ ...initialState, auth: { user } })
   })
 
   it('should logout when auth token not exist', async () => {
     await store.dispatch(refreshUser)
-    expect(store.getState()).toEqual({ auth: { user: null } })
+    expect(store.getState()).toEqual({ ...initialState, auth: { user: null } })
   })
 })

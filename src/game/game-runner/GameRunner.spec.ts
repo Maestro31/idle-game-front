@@ -16,8 +16,10 @@ describe('Game Runner', () => {
   beforeEach(() => {
     const characterCreator = new CharacterCreator()
 
-    player = new FighterStub(characterCreator.createCharacter('John Snow'))
-    opponent = new FighterStub(characterCreator.createCharacter('Daenerys'))
+    player = new FighterStub(characterCreator.createCharacterProps('John Snow'))
+    opponent = new FighterStub(
+      characterCreator.createCharacterProps('Daenerys')
+    )
 
     randomService = new RandomStub()
     gameLogger = new InMemoryGameLogger()

@@ -1,4 +1,4 @@
-import { Character, Skill } from './character.interface'
+import { CharacterProps, Skill } from './character.interface'
 import CharacterCreator from './CharacterCreator'
 
 describe('CharacterCreator', () => {
@@ -10,7 +10,8 @@ describe('CharacterCreator', () => {
 
   describe('create character', () => {
     it('should return a character with default skill points', () => {
-      expect(characterCreator.createCharacter()).toEqual({
+      expect(characterCreator.createCharacterProps('John')).toEqual({
+        name: 'John',
         skillPoints: 12,
         health: 10,
         attack: 0,
@@ -131,9 +132,10 @@ describe('CharacterCreator', () => {
   function customExpectSkill(
     skill: string,
     { from, to, skillPoints }: ExpectSkillProps,
-    act: (initialCharacter: Character) => Character
+    act: (initialCharacter: CharacterProps) => CharacterProps
   ) {
-    const initialCharacter = {
+    const initialCharacterProps = {
+      name: '',
       skillPoints: skillPoints.from,
       health: 0,
       attack: 0,
@@ -141,10 +143,10 @@ describe('CharacterCreator', () => {
       magic: 0,
     }
 
-    const character = act({ ...initialCharacter, [skill]: from })
+    const character = act({ ...initialCharacterProps, [skill]: from })
 
     expect(character).toEqual({
-      ...initialCharacter,
+      ...initialCharacterProps,
       skillPoints: skillPoints.to,
       [skill]: to,
     })

@@ -25,4 +25,17 @@ describe('Create User', () => {
       authGateway.getUser('jack.skellington@halloween.com', 'jackh@lloween')
     ).toBeDefined()
   })
+
+  it('should login after user creation', async () => {
+    await store.dispatch(
+      createUser({
+        firstname: 'Jack',
+        lastname: 'Skellington',
+        email: 'jack.skellington@halloween.com',
+        password: 'jackh@lloween',
+      })
+    )
+
+    expect(authGateway.getUsersLogged()).toHaveProperty('jack-skellington')
+  })
 })
