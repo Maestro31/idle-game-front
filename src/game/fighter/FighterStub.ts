@@ -1,17 +1,17 @@
-import { Character } from '../character/character.interface'
+import { CharacterProps } from '../character/character.interface'
 import { Fighter } from './Fighter'
 
 export default class FighterStub extends Fighter {
-  constructor(private initialCharacter: Character) {
+  constructor(private initialCharacter: CharacterProps) {
     super(initialCharacter)
   }
 
-  overrideCharacterWith(attributes: Partial<Character>): void {
-    this.character = {
+  overrideCharacterWith(attributes: Partial<CharacterProps>): void {
+    this.characterProps = {
       ...this.initialCharacter,
       ...attributes,
     }
 
-    this.remainingHealth = this.character.health
+    this.remainingHealth = this.characterProps.health
   }
 }

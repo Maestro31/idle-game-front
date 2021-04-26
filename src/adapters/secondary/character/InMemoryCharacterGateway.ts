@@ -2,7 +2,7 @@ import CharacterGatewayInterface from '../../../core/adapters/secondary/characte
 import CharacterLimitReachedError from '../../../core/adapters/secondary/character/CharacterLimitReachedError'
 import CharacterNotFoundError from '../../../core/adapters/secondary/character/CharacterNotFoundError'
 import InsufficientSkillPointsError from '../../../core/adapters/secondary/character/InsufficientSkillPointsError'
-import CharacterBuilder from '../../../core/builders/characterBuilder'
+import CharacterBuilder from '../../../core/builders/CharacterBuilder'
 import Character from '../../../core/models/Character'
 import { Skill } from '../../../game/character/character.interface'
 import CharacterCreator from '../../../game/character/CharacterCreator'
@@ -16,10 +16,7 @@ export default class InMemoryCharacterGateway
   }
 
   async createCharacter(character: Character): Promise<void> {
-    if (this.characters.length + 1 >= 10) {
-      throw new CharacterLimitReachedError()
-    }
-
+    this.guardShouldNotHaveMoreThanTenCharacters()
     this.characters.push(character)
   }
 
@@ -30,8 +27,11 @@ export default class InMemoryCharacterGateway
     return Promise.resolve(characterUpdated)
   }
 
-  feed(characters: Character[]) {
-    this.characters = characters
+  async deleteCharacter(characterId: string): Promise<void> {
+    this.characters = this.characters.filter(
+      (character) => character.id !== characterId
+    )
+    return Promise.resolve()
   }
 
   private findCharacterById(id: string): Character {
@@ -44,6 +44,10 @@ export default class InMemoryCharacterGateway
     return character
   }
 
+  feed(characters: Character[]) {
+    this.characters = characters
+  }
+
   private guardShouldHaveEnoughSkillPoints(
     skill: Skill,
     character: Character
@@ -52,6 +56,12 @@ export default class InMemoryCharacterGateway
       this.characterCreator.hasNotEnoughSkillPoints(skill, character.getProps())
     ) {
       throw new InsufficientSkillPointsError()
+    }
+  }
+
+  private guardShouldNotHaveMoreThanTenCharacters() {
+    if (this.characters.length + 1 >= 10) {
+      throw new CharacterLimitReachedError()
     }
   }
 

@@ -1,7 +1,7 @@
 import InMemoryCharacterGateway from '../../../../adapters/secondary/character/InMemoryCharacterGateway'
 import { AppState } from '../../../../redux/appState.interface'
 import { configureStore, ReduxStore } from '../../../../redux/configureStore'
-import CharacterBuilder from '../../../builders/characterBuilder'
+import CharacterBuilder from '../../../builders/CharacterBuilder'
 import { retrieveCharacters } from './retrieveCharacters'
 
 describe('Retrieve characters', () => {

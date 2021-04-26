@@ -22,6 +22,9 @@ const characters = (
         ...state,
         [character.id]: character.toPrimitives(),
       }
+    case 'CHARACTER_DELETED':
+      delete state[action.payload.id]
+      return { ...state }
     default:
       return state
   }

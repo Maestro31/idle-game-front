@@ -1,16 +1,16 @@
 import Arena from '../arena/Arena'
-import { Fighter } from '../fighter/Fighter'
+import { CharacterProps } from '../character/character.interface'
 import {
   AssaultLog,
   GameLoggerInterface,
 } from '../game-logger/GameLoggerInterface'
 
 export default class GameRunner {
-  private winner: Fighter | null = null
+  private winnerProps: CharacterProps | null = null
 
   constructor(private arena: Arena, private gameLogger: GameLoggerInterface) {
-    arena.onFightEnded((winner) => {
-      this.winner = winner
+    arena.onFightEnded((winnerProps: CharacterProps) => {
+      this.winnerProps = winnerProps
     })
 
     arena.onAssaultLogCreated((assaultLog: AssaultLog) => {
@@ -19,13 +19,13 @@ export default class GameRunner {
   }
 
   run() {
-    while (!this.winner) {
+    while (!this.winnerProps) {
       this.arena.startAssault()
       this.arena.nextTurn()
     }
   }
 
   getWinner() {
-    return this.winner
+    return this.winnerProps
   }
 }

@@ -12,6 +12,7 @@ export const CharacterActions = {
     createAction('CHARACTER_UPDATED', { character }),
   characterUpdateFailed: (errorMessage: string) =>
     createAction('CHARACTER_ERROR', { errorMessage }),
+  characterDeleted: (id: string) => createAction('CHARACTER_DELETED', { id }),
 }
 
 export type CharacterActions = ActionsUnion<typeof CharacterActions>

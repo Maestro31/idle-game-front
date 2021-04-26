@@ -1,26 +1,30 @@
-import { Character } from '../character/character.interface'
+import { CharacterProps } from '../character/character.interface'
 
 export class Fighter {
   protected remainingHealth: number
 
-  constructor(protected character: Character) {
-    this.remainingHealth = character.health
+  constructor(protected characterProps: CharacterProps) {
+    this.remainingHealth = characterProps.health
   }
 
-  getCharacter(): Character {
-    return this.character
+  getCharacter(): CharacterProps {
+    return this.characterProps
   }
 
   getAttack(): number {
-    return this.character.attack
+    return this.characterProps.attack
   }
 
   getDefense(): number {
-    return this.character.defense
+    return this.characterProps.defense
   }
 
-  getRemainingHealth() {
+  getRemainingHealth(): number {
     return this.remainingHealth
+  }
+
+  getRank(): number {
+    return this.characterProps.rank
   }
 
   attemptToInflictDamage(attackToInflict: number, opponent: Fighter): void {
@@ -34,7 +38,7 @@ export class Fighter {
     )
 
     if (this.canInflictMagicDamage(damageToInflict)) {
-      damageToInflict += this.character.magic
+      damageToInflict += this.characterProps.magic
     }
 
     opponent.takeDamage(damageToInflict)
@@ -59,6 +63,6 @@ export class Fighter {
   }
 
   private canInflictMagicDamage(damageToInflict: number): boolean {
-    return this.character.magic === damageToInflict
+    return this.characterProps.magic === damageToInflict
   }
 }

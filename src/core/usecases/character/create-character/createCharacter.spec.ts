@@ -1,7 +1,7 @@
 import InMemoryCharacterGateway from '../../../../adapters/secondary/character/InMemoryCharacterGateway'
 import { AppState } from '../../../../redux/appState.interface'
 import { ReduxStore, configureStore } from '../../../../redux/configureStore'
-import CharacterBuilder from '../../../builders/characterBuilder'
+import CharacterBuilder from '../../../builders/CharacterBuilder'
 import Character from '../../../models/Character'
 import { createCharacter } from './createCharacter'
 

@@ -10,6 +10,7 @@ export default class CharacterBuilder {
     attack: 0,
     magic: 0,
     defense: 0,
+    rank: 0,
   }
 
   withId(id: string) {
@@ -44,6 +45,11 @@ export default class CharacterBuilder {
 
   withDefense(defense: number) {
     this.props.defense = defense
+    return this
+  }
+
+  withRank(rank: number) {
+    this.props.rank = rank
     return this
   }
 

@@ -2,8 +2,8 @@ import Arena, { IllegalFightError } from './Arena'
 import CharacterCreator from '../character/CharacterCreator'
 import RandomStub from '../services/RandomStub'
 import FighterStub from '../fighter/FighterStub'
-import { Fighter } from '../fighter/Fighter'
 import { AssaultLog } from '../game-logger/GameLoggerInterface'
+import { CharacterProps } from '../character/character.interface'
 
 describe('Arena', () => {
   let arena: Arena
@@ -86,28 +86,40 @@ describe('Arena', () => {
     it('should declare the player as the winner if his opponent is dead', () => {
       randomService.willRespond(2)
 
-      player.overrideCharacterWith({ attack: 5 })
-      opponent.overrideCharacterWith({ health: 1, defense: 1 })
+      player.overrideCharacterWith({ name: 'John Snow', attack: 5 })
+      opponent.overrideCharacterWith({
+        name: 'Daenerys',
+        health: 1,
+        defense: 1,
+      })
 
-      arena.onFightEnded((winner: Fighter) => expect(winner).toBe(player))
+      let winnerName = null
+      arena.onFightEnded(
+        (winnerProps: CharacterProps) => (winnerName = winnerProps.name)
+      )
 
       arena.startAssault()
 
       expect(opponent.getRemainingHealth()).toBe(0)
+      expect(winnerName).toBe('John Snow')
     })
 
     it('should declare the opponent as the winner if the player is dead', () => {
       randomService.willRespond(2)
 
-      player.overrideCharacterWith({ health: 1, defense: 1 })
-      opponent.overrideCharacterWith({ attack: 5 })
+      player.overrideCharacterWith({ name: 'John', health: 1, defense: 1 })
+      opponent.overrideCharacterWith({ name: 'Daenerys', attack: 5 })
 
-      arena.onFightEnded((winner: Fighter) => expect(winner).toBe(opponent))
+      let winnerName = null
+      arena.onFightEnded(
+        (winnerProps: CharacterProps) => (winnerName = winnerProps.name)
+      )
 
       arena.nextTurn()
       arena.startAssault()
 
       expect(player.getRemainingHealth()).toBe(0)
+      expect(winnerName).toBe('Daenerys')
     })
 
     it('should not permit a fight if a fighter is dead', () => {
@@ -122,10 +134,9 @@ describe('Arena', () => {
     })
 
     it('should notify when the winner is declared', () => {
-      let callbackCalled = false
-      arena.onFightEnded((winner: Fighter) => {
-        expect(winner).toBe(player)
-        callbackCalled = true
+      let winnerProps = null
+      arena.onFightEnded((declaredWinnerProps: CharacterProps) => {
+        winnerProps = declaredWinnerProps
       })
 
       randomService.willRespond(2)
@@ -134,7 +145,23 @@ describe('Arena', () => {
       opponent.overrideCharacterWith({ health: 2 })
 
       arena.startAssault()
-      expect(callbackCalled).toBeTruthy()
+      expect(winnerProps).toBeDefined()
+    })
+
+    it('should increment rank and skill points by 1 for the winner', () => {
+      let rank = 0
+      arena.onFightEnded((winnerProps: CharacterProps) => {
+        rank = winnerProps.rank
+      })
+
+      randomService.willRespond(2)
+
+      player.overrideCharacterWith({ attack: 5 })
+      opponent.overrideCharacterWith({ health: 2 })
+
+      arena.startAssault()
+
+      expect(rank).toEqual(1)
     })
   })
 

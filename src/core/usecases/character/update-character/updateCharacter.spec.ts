@@ -2,7 +2,7 @@ import InMemoryCharacterGateway from '../../../../adapters/secondary/character/I
 import { Skill } from '../../../../game/character/character.interface'
 import { AppState } from '../../../../redux/appState.interface'
 import { ReduxStore, configureStore } from '../../../../redux/configureStore'
-import CharacterBuilder from '../../../builders/characterBuilder'
+import CharacterBuilder from '../../../builders/CharacterBuilder'
 import { incrementSkill } from './incrementSkill'
 
 describe('Update character', () => {

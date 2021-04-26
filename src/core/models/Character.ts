@@ -6,6 +6,7 @@ export interface CharacterDTO {
   magic: number
   defense: number
   health: number
+  rank: number
 }
 
 export interface CharacterProps {
@@ -15,6 +16,7 @@ export interface CharacterProps {
   magic: number
   defense: number
   health: number
+  rank: number
 }
 
 export default class Character {
@@ -42,6 +44,7 @@ export default class Character {
       magic: this.props.magic,
       defense: this.props.defense,
       health: this.props.health,
+      rank: this.props.rank,
     }
   }
 }

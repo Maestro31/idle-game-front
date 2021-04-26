@@ -5,6 +5,7 @@ export interface CharacterProps {
   attack: number
   defense: number
   magic: number
+  rank: number
 }
 
 export type Skill = 'health' | 'attack' | 'defense' | 'magic'

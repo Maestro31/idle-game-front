@@ -9,39 +9,56 @@ export default class CharacterCreator {
       attack: 0,
       defense: 0,
       magic: 0,
+      rank: 0,
     }
   }
 
-  increment(skill: Skill, character: CharacterProps): CharacterProps {
-    const { skillPoints } = character
+  increment(skill: Skill, characterProps: CharacterProps): CharacterProps {
+    const { skillPoints } = characterProps
 
-    if (this.hasNotEnoughSkillPoints(skill, character)) {
-      return character
+    if (this.hasNotEnoughSkillPoints(skill, characterProps)) {
+      return characterProps
     }
 
     return {
-      ...character,
-      skillPoints: skillPoints - this.calculateCost(skill, character[skill]),
-      [skill]: character[skill] + 1,
+      ...characterProps,
+      skillPoints:
+        skillPoints - this.calculateCost(skill, characterProps[skill]),
+      [skill]: characterProps[skill] + 1,
     }
   }
 
-  decrement(skill: Skill, character: CharacterProps): CharacterProps {
-    const { skillPoints } = character
+  decrement(skill: Skill, characterProps: CharacterProps): CharacterProps {
+    const { skillPoints } = characterProps
 
-    if (this.cannotBeDecremented(character[skill])) {
-      return character
+    if (this.cannotBeDecremented(characterProps[skill])) {
+      return characterProps
     }
 
     return {
-      ...character,
-      skillPoints: skillPoints + this.calculateRefund(skill, character[skill]),
-      [skill]: character[skill] - 1,
+      ...characterProps,
+      skillPoints:
+        skillPoints + this.calculateRefund(skill, characterProps[skill]),
+      [skill]: characterProps[skill] - 1,
     }
   }
 
-  hasNotEnoughSkillPoints(skill: Skill, character: CharacterProps): boolean {
-    return character.skillPoints < this.calculateCost(skill, character[skill])
+  giveReward(characterProps: CharacterProps): CharacterProps {
+    return {
+      ...characterProps,
+      rank: characterProps.rank + 1,
+      skillPoints: characterProps.skillPoints + 1,
+    }
+  }
+
+  hasNotEnoughSkillPoints(
+    skill: Skill,
+    characterProps: CharacterProps
+  ): boolean {
+    return (
+      characterProps.skillPoints <
+      this.calculateCost(skill, characterProps[skill])
+    )
   }
 
   private cannotBeDecremented(skillValue: number) {

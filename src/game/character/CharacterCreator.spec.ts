@@ -17,6 +17,7 @@ describe('CharacterCreator', () => {
         attack: 0,
         defense: 0,
         magic: 0,
+        rank: 0,
       })
     })
   })
@@ -141,6 +142,7 @@ describe('CharacterCreator', () => {
       attack: 0,
       defense: 0,
       magic: 0,
+      rank: 0,
     }
 
     const character = act({ ...initialCharacterProps, [skill]: from })

@@ -1,3 +1,5 @@
+import { CharacterProps } from '../character/character.interface'
+import CharacterCreator from '../character/CharacterCreator'
 import { Fighter } from '../fighter/Fighter'
 import { AssaultLog } from '../game-logger/GameLoggerInterface'
 import { RandomInterface } from '../services/RandomInterface'
@@ -10,7 +12,7 @@ export class IllegalFightError extends Error {
 
 export default class Arena {
   private winner: Fighter | null = null
-  private onFightEndedCallback: ((winner: Fighter) => void) | null = null
+  private onFightEndedCallback: ((winner: CharacterProps) => void) | null = null
   private onAssaultLogCreatedCallback:
     | ((assaultLog: AssaultLog) => void)
     | null = null
@@ -56,7 +58,7 @@ export default class Arena {
     this.checkEndCondition()
   }
 
-  onFightEnded(onFightEndedCallback: (winner: Fighter) => void) {
+  onFightEnded(onFightEndedCallback: (winner: CharacterProps) => void) {
     this.onFightEndedCallback = onFightEndedCallback
   }
 
@@ -91,11 +93,14 @@ export default class Arena {
   private checkEndCondition() {
     if (this.isAssailedFighterDead()) {
       this.winner = this.assailantFighter
-      this.notifyWinner(this.winner)
+      const winnerProps = this.assailantFighter.getCharacter()
+      const characterCreator = new CharacterCreator()
+      const rewardedWinnerProps = characterCreator.giveReward(winnerProps)
+      this.notifyForWinner(rewardedWinnerProps)
     }
   }
 
-  private notifyWinner(winner: Fighter) {
-    this.onFightEndedCallback && this.onFightEndedCallback(winner)
+  private notifyForWinner(winnerProps: CharacterProps) {
+    this.onFightEndedCallback && this.onFightEndedCallback(winnerProps)
   }
 }
