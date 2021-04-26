@@ -40,10 +40,7 @@ export default class CharacterCreator {
     }
   }
 
-  private hasNotEnoughSkillPoints(
-    skill: Skill,
-    character: CharacterProps
-  ): boolean {
+  hasNotEnoughSkillPoints(skill: Skill, character: CharacterProps): boolean {
     return character.skillPoints < this.calculateCost(skill, character[skill])
   }
 

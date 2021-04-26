@@ -20,6 +20,14 @@ export interface CharacterProps {
 export default class Character {
   constructor(readonly id: string, readonly props: CharacterProps) {}
 
+  getSkillPoints(): number {
+    return this.props.skillPoints
+  }
+
+  getProps() {
+    return this.props
+  }
+
   static fromPrimitives(dto: CharacterDTO): Character {
     const { id, ...props } = dto
     return new Character(id, props)

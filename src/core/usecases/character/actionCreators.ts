@@ -8,6 +8,10 @@ export const CharacterActions = {
     createAction('CHARACTER_CREATED', { character }),
   characterCreationFailed: (errorMessage: string) =>
     createAction('CHARACTER_ERROR', { errorMessage }),
+  characterUpdated: (character: Character) =>
+    createAction('CHARACTER_UPDATED', { character }),
+  characterUpdateFailed: (errorMessage: string) =>
+    createAction('CHARACTER_ERROR', { errorMessage }),
 }
 
 export type CharacterActions = ActionsUnion<typeof CharacterActions>

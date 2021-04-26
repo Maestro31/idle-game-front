@@ -16,6 +16,7 @@ const characters = (
       )
       return charactersById
     case 'CHARACTER_CREATED':
+    case 'CHARACTER_UPDATED':
       const { character } = action.payload
       return {
         ...state,

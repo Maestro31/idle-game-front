@@ -1,19 +1,16 @@
 import InMemoryCharacterGateway from '../../../../adapters/secondary/character/InMemoryCharacterGateway'
-import CharacterCreator from '../../../../game/character/CharacterCreator'
 import { AppState } from '../../../../redux/appState.interface'
 import { configureStore, ReduxStore } from '../../../../redux/configureStore'
-import Character from '../../../models/Character'
+import CharacterBuilder from '../../../builders/characterBuilder'
 import { retrieveCharacters } from './retrieveCharacters'
 
 describe('Retrieve characters', () => {
   let store: ReduxStore
   let initialState: AppState
-  let characterCreator: CharacterCreator
   let characterGateway: InMemoryCharacterGateway
 
   beforeEach(() => {
     characterGateway = new InMemoryCharacterGateway()
-    characterCreator = new CharacterCreator()
     store = configureStore({ characterGateway })
     initialState = store.getState()
   })
@@ -31,14 +28,8 @@ describe('Retrieve characters', () => {
   })
 
   it('should retrieve all characters', async () => {
-    const character1 = Character.fromPrimitives({
-      id: 'uuid-1',
-      ...characterCreator.createCharacterProps('John'),
-    })
-    const character2 = Character.fromPrimitives({
-      id: 'uuid-2',
-      ...characterCreator.createCharacterProps('Alice'),
-    })
+    const character1 = new CharacterBuilder().withId('uuid-1').build()
+    const character2 = new CharacterBuilder().withId('uuid-2').build()
 
     characterGateway.feed([character1, character2])
 
