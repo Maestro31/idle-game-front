@@ -1,4 +1,4 @@
-import InvalidCredentialsError from '../../../../adapters/secondary/auth/InvalidCredentialsError'
+import InvalidCredentialsError from '../../../adapters/secondary/auth/InvalidCredentialsError'
 import { ThunkResult } from '../../../../redux/configureStore'
 import { AuthActions } from '../actionCreators'
 export const loginUser = (

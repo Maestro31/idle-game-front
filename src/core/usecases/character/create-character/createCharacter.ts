@@ -1,13 +1,18 @@
-import { CharacterProps } from '../../../../game/character/character.interface'
 import { ThunkResult } from '../../../../redux/configureStore'
-import { retrieveCharacters } from '../retrieve-characters/retrieveCharacters'
+import Character from '../../../models/Character'
+import { CharacterActions } from '../actionCreators'
 
 export const createCharacter = (
-  characterProps: CharacterProps
+  character: Character
 ): ThunkResult<Promise<void>> => async (
   dispatch,
   getState,
   { characterGateway }
 ) => {
-  await characterGateway.createCharacter(characterProps)
+  try {
+    await characterGateway.createCharacter(character)
+    dispatch(CharacterActions.characterCreated(character))
+  } catch (e) {
+    dispatch(CharacterActions.characterCreationFailed(e.message))
+  }
 }

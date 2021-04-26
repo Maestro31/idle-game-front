@@ -2,6 +2,7 @@ import InMemoryCharacterGateway from '../../../../adapters/secondary/character/I
 import CharacterCreator from '../../../../game/character/CharacterCreator'
 import { AppState } from '../../../../redux/appState.interface'
 import { configureStore, ReduxStore } from '../../../../redux/configureStore'
+import Character from '../../../models/Character'
 import { retrieveCharacters } from './retrieveCharacters'
 
 describe('Retrieve characters', () => {
@@ -23,20 +24,21 @@ describe('Retrieve characters', () => {
     expect(store.getState()).toEqual({
       ...initialState,
       character: {
+        ...initialState.character,
         byId: {},
       },
     })
   })
 
   it('should retrieve all characters', async () => {
-    const character1 = {
+    const character1 = Character.fromPrimitives({
       id: 'uuid-1',
-      properties: characterCreator.createCharacterProps('John'),
-    }
-    const character2 = {
+      ...characterCreator.createCharacterProps('John'),
+    })
+    const character2 = Character.fromPrimitives({
       id: 'uuid-2',
-      properties: characterCreator.createCharacterProps('Alice'),
-    }
+      ...characterCreator.createCharacterProps('Alice'),
+    })
 
     characterGateway.feed([character1, character2])
 
@@ -45,9 +47,10 @@ describe('Retrieve characters', () => {
     expect(store.getState()).toEqual({
       ...initialState,
       character: {
+        ...initialState.character,
         byId: {
-          'uuid-1': character1,
-          'uuid-2': character2,
+          'uuid-1': character1.toPrimitives(),
+          'uuid-2': character2.toPrimitives(),
         },
       },
     })

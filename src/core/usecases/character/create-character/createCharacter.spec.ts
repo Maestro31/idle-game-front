@@ -2,6 +2,7 @@ import InMemoryCharacterGateway from '../../../../adapters/secondary/character/I
 import CharacterCreator from '../../../../game/character/CharacterCreator'
 import { AppState } from '../../../../redux/appState.interface'
 import { ReduxStore, configureStore } from '../../../../redux/configureStore'
+import Character from '../../../models/Character'
 import { createCharacter } from './createCharacter'
 
 describe('Create character', () => {
@@ -18,9 +19,50 @@ describe('Create character', () => {
   })
 
   it('should create character with the given informations', async () => {
-    const characterProps = characterCreator.createCharacterProps('John')
-    await store.dispatch(createCharacter(characterProps))
+    const character = Character.fromPrimitives({
+      id: 'uuid-1',
+      ...characterCreator.createCharacterProps('John'),
+    })
+    await store.dispatch(createCharacter(character))
 
-    expect(await characterGateway.retrieveCharacters()).toHaveLength(1)
+    expect(store.getState()).toEqual({
+      ...initialState,
+      character: {
+        byId: {
+          ...initialState.character.byId,
+          [character.id]: character.toPrimitives(),
+        },
+        errorMessage: null,
+      },
+    })
+  })
+
+  it('should not permit to create an eleventh character', async () => {
+    let characters: Character[] = []
+
+    for (let i = 0; i < 9; i++) {
+      const character = Character.fromPrimitives({
+        id: `uuid-${i}`,
+        ...characterCreator.createCharacterProps(`John ${i}`),
+      })
+      characters.push(character)
+    }
+
+    characterGateway.feed(characters)
+
+    const additionnalCharacter = Character.fromPrimitives({
+      id: `uuid-10`,
+      ...characterCreator.createCharacterProps(`John 10`),
+    })
+
+    await store.dispatch(createCharacter(additionnalCharacter))
+
+    expect(store.getState()).toEqual({
+      ...initialState,
+      character: {
+        ...initialState.character,
+        errorMessage: 'Unable to add an additional character',
+      },
+    })
   })
 })

@@ -3,7 +3,7 @@ import AuthGatewayInterface, {
 } from '../../../core/adapters/secondary/auth/AuthGatewayInterface'
 import { UserProps } from '../../../core/models/User'
 import { User } from '../../../redux/appState.interface'
-import InvalidCredentialsError from './InvalidCredentialsError'
+import InvalidCredentialsError from '../../../core/adapters/secondary/auth/InvalidCredentialsError'
 
 export default class InMemoryAuthGateway implements AuthGatewayInterface {
   private users: { [key: string]: User } = {
