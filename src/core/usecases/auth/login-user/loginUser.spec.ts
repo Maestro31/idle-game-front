@@ -12,6 +12,13 @@ describe('Login User', () => {
 
   beforeEach(() => {
     authGateway = new InMemoryAuthGateway()
+    authGateway.register('uuid-1', {
+      firstname: 'Jack',
+      lastname: 'Skellington',
+      email: 'jack.skellington@halloween.com',
+      password: '1234',
+    })
+
     localStorageService = new InMemoryLocalStorage()
     store = configureStore({ authGateway, localStorageService })
     initialState = store.getState()
@@ -23,6 +30,7 @@ describe('Login User', () => {
     )
 
     const user = {
+      id: 'uuid-1',
       firstname: 'Jack',
       lastname: 'Skellington',
       email: 'jack.skellington@halloween.com',

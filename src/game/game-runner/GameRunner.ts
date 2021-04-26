@@ -1,9 +1,7 @@
 import Arena from '../arena/Arena'
 import { CharacterProps } from '../character/character.interface'
-import {
-  AssaultLog,
-  GameLoggerInterface,
-} from '../game-logger/GameLoggerInterface'
+import AssaultLog from '../game-logger/AssaultLog'
+import GameLoggerInterface from '../game-logger/GameLoggerInterface'
 
 export default class GameRunner {
   private winnerProps: CharacterProps | null = null

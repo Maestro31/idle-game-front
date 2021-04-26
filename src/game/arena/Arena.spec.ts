@@ -2,7 +2,7 @@ import Arena, { IllegalFightError } from './Arena'
 import CharacterCreator from '../character/CharacterCreator'
 import RandomStub from '../services/RandomStub'
 import FighterStub from '../fighter/FighterStub'
-import { AssaultLog } from '../game-logger/GameLoggerInterface'
+import AssaultLog from '../game-logger/AssaultLog'
 import { CharacterProps } from '../character/character.interface'
 
 describe('Arena', () => {
@@ -167,17 +167,10 @@ describe('Arena', () => {
 
   describe('Log system', () => {
     it('should notify when a log assault is created', () => {
-      let assaultLogCallbackCalled = false
-      arena.onAssaultLogCreated((assaultLog: AssaultLog) => {
-        expect(assaultLog).toEqual({
-          assailant: player.getCharacter(),
-          assailed: opponent.getCharacter(),
-          assaultResult: {
-            attack: 2,
-            damageTaken: 2,
-          },
-        })
-        assaultLogCallbackCalled = true
+      let assaultLog = null
+
+      arena.onAssaultLogCreated((receivedAssaultLog: AssaultLog) => {
+        assaultLog = receivedAssaultLog
       })
 
       randomService.willRespond(2)
@@ -187,7 +180,15 @@ describe('Arena', () => {
 
       arena.startAssault()
 
-      expect(assaultLogCallbackCalled).toBeTruthy()
+      expect(assaultLog).toEqual({
+        turn: 1,
+        assailant: player.getCharacter(),
+        assailed: opponent.getCharacter(),
+        assaultResult: {
+          attack: 2,
+          damageTaken: 2,
+        },
+      })
     })
   })
 })

@@ -6,18 +6,12 @@ import { User } from '../../../redux/appState.interface'
 import InvalidCredentialsError from '../../../core/adapters/secondary/auth/InvalidCredentialsError'
 
 export default class InMemoryAuthGateway implements AuthGatewayInterface {
-  private users: { [key: string]: User } = {
-    'jack.skellington@halloween.com-h@lloween': {
-      firstname: 'Jack',
-      lastname: 'Skellington',
-      email: 'jack.skellington@halloween.com',
-    },
-  }
+  private users: { [key: string]: User } = {}
 
   private usersLogged: { [key: string]: User } = {}
 
   async login(email: string, password: string): Promise<LoginResponse> {
-    const user = this.users[`${email}-${password}`]
+    const user = Object.values(this.users).find((user) => user.email === email)
 
     if (!user) {
       throw new InvalidCredentialsError()
@@ -32,9 +26,9 @@ export default class InMemoryAuthGateway implements AuthGatewayInterface {
     })
   }
 
-  async register(userProps: UserProps): Promise<void> {
+  async register(userId: string, userProps: UserProps): Promise<void> {
     const { email, password, firstname, lastname } = userProps
-    this.users[`${email}-${password}`] = { email, firstname, lastname }
+    this.users[userId] = { id: userId, email, firstname, lastname }
     return Promise.resolve()
   }
 
@@ -44,8 +38,8 @@ export default class InMemoryAuthGateway implements AuthGatewayInterface {
     return Promise.resolve({ user, authToken })
   }
 
-  getUser(email: string, password: string) {
-    return this.users[`${email}-${password}`]
+  getUser(userId: string) {
+    return this.users[userId]
   }
 
   getUsersLogged() {

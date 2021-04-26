@@ -46,6 +46,7 @@ describe('Game Runner', () => {
     gameRunner.run()
     expect(gameLogger.getLogs()).toEqual([
       {
+        turn: 1,
         assailant: player.getCharacter(),
         assailed: opponent.getCharacter(),
         assaultResult: {
@@ -54,6 +55,7 @@ describe('Game Runner', () => {
         },
       },
       {
+        turn: 2,
         assailant: opponent.getCharacter(),
         assailed: player.getCharacter(),
         assaultResult: {
@@ -62,6 +64,7 @@ describe('Game Runner', () => {
         },
       },
       {
+        turn: 3,
         assailant: player.getCharacter(),
         assailed: opponent.getCharacter(),
         assaultResult: {

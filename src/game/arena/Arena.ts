@@ -1,7 +1,7 @@
 import { CharacterProps } from '../character/character.interface'
 import CharacterCreator from '../character/CharacterCreator'
 import { Fighter } from '../fighter/Fighter'
-import { AssaultLog } from '../game-logger/GameLoggerInterface'
+import AssaultLog from '../game-logger/AssaultLog'
 import { RandomInterface } from '../services/RandomInterface'
 
 export class IllegalFightError extends Error {
@@ -11,8 +11,12 @@ export class IllegalFightError extends Error {
 }
 
 export default class Arena {
-  private winner: Fighter | null = null
-  private onFightEndedCallback: ((winner: CharacterProps) => void) | null = null
+  private isEndFight = false
+  private turnCount = 0
+
+  private onFightEndedCallback:
+    | ((winnerProps: CharacterProps) => void)
+    | null = null
   private onAssaultLogCreatedCallback:
     | ((assaultLog: AssaultLog) => void)
     | null = null
@@ -40,6 +44,8 @@ export default class Arena {
   startAssault(): void {
     this.guardIllegalFight()
 
+    this.turnCount += 1
+
     const assailantAttack = this.assailantFighter.getAttack()
     const attackToInflict = this.randomService.getValueUntil(assailantAttack)
 
@@ -58,7 +64,7 @@ export default class Arena {
     this.checkEndCondition()
   }
 
-  onFightEnded(onFightEndedCallback: (winner: CharacterProps) => void) {
+  onFightEnded(onFightEndedCallback: (winnerProps: CharacterProps) => void) {
     this.onFightEndedCallback = onFightEndedCallback
   }
 
@@ -75,6 +81,7 @@ export default class Arena {
   private logAssault(attackToInflict: number, damageTaken: number): void {
     this.onAssaultLogCreatedCallback &&
       this.onAssaultLogCreatedCallback({
+        turn: this.turnCount,
         assailant: this.assailantFighter.getCharacter(),
         assailed: this.assailedFighter.getCharacter(),
         assaultResult: {
@@ -85,17 +92,17 @@ export default class Arena {
   }
 
   private guardIllegalFight() {
-    if (this.winner) {
+    if (this.isEndFight) {
       throw new IllegalFightError()
     }
   }
 
   private checkEndCondition() {
     if (this.isAssailedFighterDead()) {
-      this.winner = this.assailantFighter
-      const winnerProps = this.assailantFighter.getCharacter()
-      const characterCreator = new CharacterCreator()
-      const rewardedWinnerProps = characterCreator.giveReward(winnerProps)
+      this.isEndFight = true
+      const rewardedWinnerProps = new CharacterCreator().giveReward(
+        this.assailantFighter.getCharacter()
+      )
       this.notifyForWinner(rewardedWinnerProps)
     }
   }

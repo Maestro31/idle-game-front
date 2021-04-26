@@ -1,14 +1,4 @@
-import { CharacterProps } from '../character/character.interface'
-
-export interface AssaultLog {
-  assailant: CharacterProps
-  assailed: CharacterProps
-  assaultResult: {
-    attack: number
-    damageTaken: number
-  }
-}
-
-export interface GameLoggerInterface {
+import AssaultLog from './AssaultLog'
+export default interface GameLoggerInterface {
   logAssault(assaultLog: AssaultLog): void
 }

@@ -13,7 +13,7 @@ describe('Create User', () => {
 
   it('should create user with given informations', async () => {
     await store.dispatch(
-      createUser({
+      createUser('uuid-1', {
         firstname: 'Jack',
         lastname: 'Skellington',
         email: 'jack.skellington@halloween.com',
@@ -21,14 +21,12 @@ describe('Create User', () => {
       })
     )
 
-    expect(
-      authGateway.getUser('jack.skellington@halloween.com', 'jackh@lloween')
-    ).toBeDefined()
+    expect(authGateway.getUser('uuid-1')).toBeDefined()
   })
 
   it('should login after user creation', async () => {
     await store.dispatch(
-      createUser({
+      createUser('uuid-1', {
         firstname: 'Jack',
         lastname: 'Skellington',
         email: 'jack.skellington@halloween.com',

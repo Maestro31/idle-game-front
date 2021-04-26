@@ -24,14 +24,17 @@ describe('Refresh user', () => {
       email: 'jack.skellington@halloween.com',
     }
 
-    await authGateway.register({ ...user, password: 'password' })
+    await authGateway.register('uuid-1', { ...user, password: 'password' })
     const data = await authGateway.login(user.email, 'password')
 
     localStorageService.setItem('auth-token', data.authToken)
 
     await store.dispatch(refreshUser)
 
-    expect(store.getState()).toEqual({ ...initialState, auth: { user } })
+    expect(store.getState()).toEqual({
+      ...initialState,
+      auth: { user: { id: 'uuid-1', ...user } },
+    })
   })
 
   it('should logout when auth token not exist', async () => {

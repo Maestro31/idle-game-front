@@ -1,4 +1,5 @@
-import { AssaultLog, GameLoggerInterface } from './GameLoggerInterface'
+import AssaultLog from './AssaultLog'
+import GameLoggerInterface from './GameLoggerInterface'
 
 export default class ConsoleGameLogger implements GameLoggerInterface {
   logAssault(assaultLog: AssaultLog): void {
