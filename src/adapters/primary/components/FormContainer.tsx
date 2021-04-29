@@ -3,23 +3,23 @@ import styled from '@emotion/styled'
 
 export interface FormContainerProps {
   title: string
-  children: React.ReactNode,
+  children: React.ReactNode
 }
 
-export default function FormContainer({title, children}: FormContainerProps) {
+export default function FormContainer({ title, children }: FormContainerProps) {
   return (
     <Container>
       <Title>{title}</Title>
-        { children }
+      {children}
     </Container>
   )
 }
 
 const Container = styled.div({
-  backgroundColor: "#A08585",
+  backgroundColor: '#8C7668',
   borderRadius: '10px',
   width: '100%',
-  padding: "20px",
+  padding: '20px',
   boxSizing: 'border-box',
   boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
 })
