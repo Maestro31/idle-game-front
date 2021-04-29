@@ -95,6 +95,14 @@ describe('CharacterCreator', () => {
       })
     }
 
+    it(`should not decrement health less than 10`, () => {
+      expectDecrementSkill('health', {
+        from: 10,
+        to: 10,
+        skillPoints: { from: 12, to: 12 },
+      })
+    })
+
     for (const skill of ['attack', 'defense', 'magic']) {
       it(`should decrement the ${skill} of 1 and refund 2 skill point`, () => {
         expectDecrementSkill(skill, {

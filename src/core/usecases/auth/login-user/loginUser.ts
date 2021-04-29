@@ -1,6 +1,6 @@
-import InvalidCredentialsError from '../../../adapters/secondary/auth/InvalidCredentialsError'
 import { ThunkResult } from '../../../../redux/configureStore'
 import { AuthActions } from '../actionCreators'
+
 export const loginUser = (
   email: string,
   password: string
@@ -14,8 +14,6 @@ export const loginUser = (
     dispatch(AuthActions.userAuthenticated(data.user))
     localStorageService.setItem('auth-token', data.authToken)
   } catch (e) {
-    if (e instanceof InvalidCredentialsError) {
-      return
-    }
+    dispatch(AuthActions.loginFailed(e.message))
   }
 }

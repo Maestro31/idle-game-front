@@ -1,4 +1,5 @@
-import { AssaultLog, GameLoggerInterface } from './GameLoggerInterface'
+import GameLoggerInterface from './GameLoggerInterface'
+import AssaultLog from './AssaultLog'
 
 export default class InMemoryGameLogger implements GameLoggerInterface {
   private logs: AssaultLog[] = []

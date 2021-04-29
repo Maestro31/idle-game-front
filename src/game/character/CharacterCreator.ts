@@ -31,7 +31,7 @@ export default class CharacterCreator {
   decrement(skill: Skill, characterProps: CharacterProps): CharacterProps {
     const { skillPoints } = characterProps
 
-    if (this.cannotBeDecremented(characterProps[skill])) {
+    if (this.cannotBeDecremented(skill, characterProps)) {
       return characterProps
     }
 
@@ -61,8 +61,11 @@ export default class CharacterCreator {
     )
   }
 
-  private cannotBeDecremented(skillValue: number) {
-    return skillValue === 0
+  private cannotBeDecremented(skill: Skill, characterProps: CharacterProps) {
+    return (
+      characterProps[skill] === 0 ||
+      (skill === 'health' && characterProps.health === 10)
+    )
   }
 
   private calculateCost(skill: Skill, currentValue: number) {

@@ -36,7 +36,7 @@ describe('Create character', () => {
   it('should not permit to create an eleventh character', async () => {
     let characters: Character[] = []
 
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < 10; i++) {
       characters.push(new CharacterBuilder().withId(`uuid-${i}`).build())
     }
 

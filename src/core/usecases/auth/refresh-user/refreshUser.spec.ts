@@ -33,12 +33,35 @@ describe('Refresh user', () => {
 
     expect(store.getState()).toEqual({
       ...initialState,
-      auth: { user: { id: 'uuid-1', ...user } },
+      auth: {
+        ...initialState.auth,
+        user: { id: 'uuid-1', ...user },
+        status: 'connected',
+      },
     })
   })
 
   it('should logout when auth token not exist', async () => {
     await store.dispatch(refreshUser)
-    expect(store.getState()).toEqual({ ...initialState, auth: { user: null } })
+    expect(store.getState()).toEqual({
+      ...initialState,
+      auth: { ...initialState.auth, user: null, status: 'disconnected' },
+    })
+  })
+
+  it('should track the process of refreshing', (done) => {
+    const unsubscribe = store.subscribe(() => {
+      expect(store.getState()).toEqual({
+        ...initialState,
+        auth: {
+          ...initialState.auth,
+          status: 'fetching',
+        },
+      })
+      unsubscribe()
+      done()
+    })
+
+    store.dispatch(refreshUser)
   })
 })

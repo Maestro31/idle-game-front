@@ -35,7 +35,10 @@ describe('Login User', () => {
       lastname: 'Skellington',
       email: 'jack.skellington@halloween.com',
     }
-    expect(store.getState()).toEqual({ ...initialState, auth: { user } })
+    expect(store.getState()).toEqual({
+      ...initialState,
+      auth: { ...initialState.auth, user, status: 'connected' },
+    })
 
     const usersLogged = authGateway.getUsersLogged()
     expect(usersLogged['jack-skellington']).toEqual(user)
@@ -44,7 +47,15 @@ describe('Login User', () => {
   it('should not login user when credentials are incorrect', async () => {
     await store.dispatch(loginUser('test@test.com', 'incorrect'))
 
-    expect(store.getState()).toEqual({ ...initialState, auth: { user: null } })
+    expect(store.getState()).toEqual({
+      ...initialState,
+      auth: {
+        ...initialState.auth,
+        user: null,
+        status: 'disconnected',
+        errorMessage: 'Invalid credentials',
+      },
+    })
   })
 
   it('should store auth token on local storage', async () => {

@@ -8,7 +8,7 @@ import { Skill } from '../../../game/character/character.interface'
 import CharacterCreator from '../../../game/character/CharacterCreator'
 export default class InMemoryCharacterGateway
   implements CharacterGatewayInterface {
-  private characters: Character[] = []
+  protected characters: Character[] = []
   private characterCreator: CharacterCreator = new CharacterCreator()
 
   async retrieveCharacters(): Promise<Character[]> {
@@ -60,7 +60,7 @@ export default class InMemoryCharacterGateway
   }
 
   private guardShouldNotHaveMoreThanTenCharacters() {
-    if (this.characters.length + 1 >= 10) {
+    if (this.characters.length + 1 > 10) {
       throw new CharacterLimitReachedError()
     }
   }

@@ -15,4 +15,4 @@ export const CharacterActions = {
   characterDeleted: (id: string) => createAction('CHARACTER_DELETED', { id }),
 }
 
-export type CharacterActions = ActionsUnion<typeof CharacterActions>
+export type CharacterActionTypes = ActionsUnion<typeof CharacterActions>

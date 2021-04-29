@@ -10,6 +10,8 @@ export interface AppState {
 
 export interface AuthState {
   user: User | null
+  errorMessage: string | null
+  status: 'idle' | 'fetching' | 'connected' | 'disconnected'
 }
 
 export interface User {

@@ -4,13 +4,14 @@ import AuthGatewayInterface, {
 import { UserProps } from '../../../core/models/User'
 import { User } from '../../../redux/appState.interface'
 import InvalidCredentialsError from '../../../core/adapters/secondary/auth/InvalidCredentialsError'
+import InvalidTokenError from '../../../core/adapters/secondary/auth/InvalidToken'
 
 export default class InMemoryAuthGateway implements AuthGatewayInterface {
-  private users: { [key: string]: User } = {}
+  protected users: { [key: string]: User } = {}
 
-  private usersLogged: { [key: string]: User } = {}
+  protected usersLogged: { [key: string]: User } = {}
 
-  async login(email: string, password: string): Promise<LoginResponse> {
+  async login(email: string, _: string): Promise<LoginResponse> {
     const user = Object.values(this.users).find((user) => user.email === email)
 
     if (!user) {
@@ -27,15 +28,30 @@ export default class InMemoryAuthGateway implements AuthGatewayInterface {
   }
 
   async register(userId: string, userProps: UserProps): Promise<void> {
-    const { email, password, firstname, lastname } = userProps
+    const { email, firstname, lastname } = userProps
     this.users[userId] = { id: userId, email, firstname, lastname }
     return Promise.resolve()
   }
 
   async refreshUser(authToken: string): Promise<LoginResponse> {
-    const user = this.usersLogged[authToken]
+    const [firstname, lastname] = authToken.split('-')
+
+    const user = Object.values(this.users).find(
+      (user) =>
+        user.firstname.toLowerCase() === firstname &&
+        user.lastname.toLowerCase() === lastname
+    )
+
+    if (!user) {
+      throw new InvalidTokenError()
+    }
 
     return Promise.resolve({ user, authToken })
+  }
+
+  async logoutUser(authToken: string): Promise<void> {
+    delete this.usersLogged[authToken]
+    return Promise.resolve()
   }
 
   getUser(userId: string) {

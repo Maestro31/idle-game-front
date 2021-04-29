@@ -6,7 +6,13 @@ export const refreshUser: ThunkResult<Promise<void>> = async (
   getState,
   { authGateway, localStorageService }
 ) => {
+  dispatch(AuthActions.fetchingUser())
   const authToken = localStorageService.getItem('auth-token')
+
+  if (!authToken) {
+    dispatch(AuthActions.logout())
+    return
+  }
 
   const data = await authGateway.refreshUser(authToken)
 

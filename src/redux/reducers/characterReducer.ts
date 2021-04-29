@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux'
-import { CharacterActions } from '../../core/usecases/character/actionCreators'
+import { CharacterActionTypes } from '../../core/usecases/character/actionCreators'
 import { CharactersById } from '../appState.interface'
 
 const initialState: CharactersById = {}
 
 const characters = (
   state: CharactersById = initialState,
-  action: CharacterActions
+  action: CharacterActionTypes
 ) => {
   switch (action.type) {
     case 'CHARACTERS_RETRIEVED':
@@ -34,7 +34,7 @@ const errorMessageInitialState: string | null = null
 
 const errorMessage = (
   state: string | null = errorMessageInitialState,
-  action: CharacterActions
+  action: CharacterActionTypes
 ) => {
   if (action.type === 'CHARACTER_ERROR') {
     return action.payload.errorMessage
