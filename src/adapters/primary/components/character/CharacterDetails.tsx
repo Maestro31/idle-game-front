@@ -41,7 +41,7 @@ export default function CharacterDetails({ character }: CharacterDetailsProps) {
 
 const Container = styled.div({
   width: '100%',
-  height: '180px',
+  height: '30vh',
   display: 'flex',
 })
 
@@ -52,16 +52,21 @@ const PreviewContainer = styled.div({
   alignItems: 'center',
   justifyContent: 'center',
   height: '100%',
-  width: '120px',
+  minWidth: '130px',
+  flexGrow: 1,
 })
 
 const DetailsContainer = styled.div({
   color: 'white',
   marginLeft: '20px',
+  flexGrow: 10,
 })
 
 const Name = styled.h3({
   marginTop: 0,
+  '@media (max-height: 600px)': {
+    fontSize: '0.8em',
+  },
 })
 
 const StatsContainer = styled.div({
@@ -76,6 +81,9 @@ const SkillStatContainer = styled.div({
   color: '#DCD0CA',
   fontWeight: 'bold',
   fontSize: '1.2em',
+  '@media (max-height: 600px)': {
+    fontSize: '1em',
+  },
 })
 
 const StatCount = styled.span({
@@ -86,4 +94,7 @@ const StatCount = styled.span({
   textAlign: 'right',
   marginRight: '20px',
   color: 'white',
+  '@media (max-height: 600px)': {
+    fontSize: '1.2em',
+  },
 })

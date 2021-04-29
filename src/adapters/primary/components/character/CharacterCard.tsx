@@ -40,6 +40,8 @@ export default function CharacterCard({
 
 const Container = styled.div(
   ({ selected, up }: { selected: boolean; up: boolean }) => ({
+    minWidth: '80px',
+    minHeight: '80px',
     backgroundColor: '#8F7769',
     borderRadius: '5px',
     position: 'relative',

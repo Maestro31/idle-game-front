@@ -20,7 +20,7 @@ export default function Characters() {
   return (
     <PageContainer
       data-testid="characters-view"
-      style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
+      style={{ display: 'flex', flexDirection: 'column', minHeight: '560px' }}
     >
       {selectedCharacter && <CharacterDetails character={selectedCharacter} />}
       <CharactersGrid

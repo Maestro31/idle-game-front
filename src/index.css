@@ -12,6 +12,9 @@ body {
   box-sizing: border-box;
   height: 100vh;
   width: 100vw;
+  min-width: 320px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 code {
