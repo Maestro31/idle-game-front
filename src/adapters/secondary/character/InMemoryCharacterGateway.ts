@@ -15,6 +15,11 @@ export default class InMemoryCharacterGateway
     return Promise.resolve(this.characters)
   }
 
+  async retrieveCharacter(characterId: string): Promise<Character> {
+    const character = this.findCharacterById(characterId)
+    return Promise.resolve(character)
+  }
+
   async createCharacter(character: Character): Promise<void> {
     this.guardShouldNotHaveMoreThanTenCharacters()
     this.characters.push(character)

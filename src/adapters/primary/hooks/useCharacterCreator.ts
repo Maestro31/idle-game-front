@@ -4,23 +4,23 @@ import CharacterCreator from '../../../game/character/CharacterCreator'
 
 export default function useCharacterCreator() {
   const characterCreator = new CharacterCreator()
-  const [character, setCharacter] = useState(
+  const [characterProps, setCharacterProps] = useState(
     characterCreator.createCharacterProps('')
   )
   const [validCharacter, setValidCharacter] = useState(false)
 
   const increment = (skill: Skill) => (e: React.MouseEvent) => {
-    setCharacter(characterCreator.increment(skill, character))
+    setCharacterProps(characterCreator.increment(skill, characterProps))
   }
 
   const decrement = (skill: Skill) => (e: React.MouseEvent) => {
-    setCharacter(characterCreator.decrement(skill, character))
+    setCharacterProps(characterCreator.decrement(skill, characterProps))
   }
 
   const updateCharacterName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value
     setValidCharacter(name.length >= 3)
-    setCharacter({ ...character, name })
+    setCharacterProps({ ...characterProps, name })
   }
 
   return {
@@ -28,6 +28,6 @@ export default function useCharacterCreator() {
     increment,
     decrement,
     validCharacter,
-    character,
+    characterProps,
   }
 }

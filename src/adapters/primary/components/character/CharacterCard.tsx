@@ -52,6 +52,9 @@ const Container = styled.div(
       : up
       ? '2px solid #BAEC2D'
       : '2px solid transparent',
+    '&:hover': {
+      cursor: 'pointer',
+    },
   })
 )
 

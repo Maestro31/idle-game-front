@@ -11,12 +11,12 @@ import {
   inputTextStyle,
   secondaryByttonStyle,
 } from '../components/styles'
-import InputCharacterSkill from '../components/character/InputCharacterSkill'
 import { PageContainer } from '../components/sharedComponents'
+import SkillForm from '../components/character/SkillForm'
 
 export default function CreateCharacter() {
   const {
-    character,
+    characterProps,
     increment,
     decrement,
     validCharacter,
@@ -27,46 +27,28 @@ export default function CreateCharacter() {
 
   const submitCharacter = () => {
     dispatch(
-      createCharacter(Character.fromPrimitives({ id: uuid(), ...character }))
+      createCharacter(
+        Character.fromPrimitives({ id: uuid(), ...characterProps })
+      )
     )
     history.push('/')
   }
 
   return (
     <PageContainer data-testid="create-character-view">
-      <CharacterDetails character={character} />
+      <CharacterDetails characterProps={characterProps} />
       <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
         <InputText
           type="text"
           placeholder="Nom du personnage"
           onChange={updateCharacterName}
-          value={character.name}
+          value={characterProps.name}
         />
-        <SkillPointsCount>
-          {character.skillPoints} points restants
-        </SkillPointsCount>
-        <SkillsContainer>
-          <InputCharacterSkill
-            label="Santé"
-            increment={increment('health')}
-            decrement={decrement('health')}
-          />
-          <InputCharacterSkill
-            label="Attaque"
-            increment={increment('attack')}
-            decrement={decrement('attack')}
-          />
-          <InputCharacterSkill
-            label="Magie"
-            increment={increment('magic')}
-            decrement={decrement('magic')}
-          />
-          <InputCharacterSkill
-            label="Défense"
-            increment={increment('defense')}
-            decrement={decrement('defense')}
-          />
-        </SkillsContainer>
+        <SkillForm
+          characterProps={characterProps}
+          increment={increment}
+          decrement={decrement}
+        />
         <ButtonContainer>
           <CreateCharacterButton
             disabled={!validCharacter}
@@ -83,17 +65,6 @@ export default function CreateCharacter() {
 const InputText = styled.input({
   ...(inputTextStyle as {}),
   marginTop: '20px',
-})
-
-const SkillPointsCount = styled.h3({
-  color: '#FAE056',
-  fontSize: '1.5em',
-  textAlign: 'center',
-})
-
-const SkillsContainer = styled.div({
-  ...(flexColumnStyle as {}),
-  alignItems: 'center',
 })
 
 const ButtonContainer = styled.div({

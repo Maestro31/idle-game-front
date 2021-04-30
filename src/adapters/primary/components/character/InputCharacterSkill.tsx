@@ -6,7 +6,7 @@ import { flexRowCenterStyle, secondaryByttonStyle } from '../styles'
 
 interface InputCharacterSkillProps {
   increment: (e: React.MouseEvent) => void
-  decrement: (e: React.MouseEvent) => void
+  decrement?: (e: React.MouseEvent) => void
   label: string
 }
 
@@ -17,9 +17,11 @@ export default function InputCharacterSkill({
 }: InputCharacterSkillProps) {
   return (
     <InputSkillContainer>
-      <SkillButton onClick={decrement}>
-        <img src={decreaseIcon} alt="decrease skill" height={30} width={30} />
-      </SkillButton>
+      {decrement && (
+        <SkillButton onClick={decrement}>
+          <img src={decreaseIcon} alt="decrease skill" height={30} width={30} />
+        </SkillButton>
+      )}
       <SkillName>{label}</SkillName>
       <SkillButton onClick={increment}>
         <img src={increaseIcon} alt="decrease skill" height={30} width={30} />
@@ -35,7 +37,7 @@ const InputSkillContainer = styled.div({
   marginBottom: '15px',
 })
 
-const SkillButton = styled.div({
+const SkillButton = styled.button({
   ...(secondaryByttonStyle as {}),
   ...(flexRowCenterStyle as {}),
   borderRadius: '5px',

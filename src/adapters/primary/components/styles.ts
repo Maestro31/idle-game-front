@@ -38,6 +38,9 @@ export const secondaryByttonStyle: Interpolation<any> = {
   ...(buttonStyle as {}),
   backgroundColor: '#8F7769',
   color: 'white',
+  '&:hover': {
+    cursor: 'pointer',
+  },
 }
 
 export const flexColumnStyle: Interpolation<any> = {

@@ -12,14 +12,14 @@ interface SkillStatProps {
 function SkillStat({ skillCount, skillName }: SkillStatProps) {
   return (
     <SkillStatContainer>
-      <StatCount>{skillCount}</StatCount>
       <span>{skillName}</span>
+      <StatCount>{skillCount}</StatCount>
     </SkillStatContainer>
   )
 }
 
 interface CharacterDetailsProps {
-  character: CharacterProps
+  characterProps: CharacterProps
   actionButtonProps?: {
     title: string
     onClick: (e: React.MouseEvent) => void
@@ -28,9 +28,13 @@ interface CharacterDetailsProps {
 }
 
 export default function CharacterDetails({
-  character,
+  characterProps,
   actionButtonProps,
 }: CharacterDetailsProps) {
+  if (!characterProps) {
+    return <div></div>
+  }
+
   return (
     <Container>
       <PreviewContainer>
@@ -45,12 +49,12 @@ export default function CharacterDetails({
         )}
       </PreviewContainer>
       <DetailsContainer>
-        <Name>{character.name}</Name>
+        <Name>{characterProps.name}</Name>
         <StatsContainer>
-          <SkillStat skillName="Santé" skillCount={character.health} />
-          <SkillStat skillName="Attaque" skillCount={character.attack} />
-          <SkillStat skillName="Magie" skillCount={character.magic} />
-          <SkillStat skillName="Défense" skillCount={character.defense} />
+          <SkillStat skillName="Santé" skillCount={characterProps.health} />
+          <SkillStat skillName="Attaque" skillCount={characterProps.attack} />
+          <SkillStat skillName="Magie" skillCount={characterProps.magic} />
+          <SkillStat skillName="Défense" skillCount={characterProps.defense} />
         </StatsContainer>
       </DetailsContainer>
     </Container>
@@ -61,6 +65,7 @@ const Container = styled.div({
   display: 'flex',
   width: '100%',
   height: '30vh',
+  maxWidth: '350px',
 })
 
 const PreviewContainer = styled.div({
@@ -83,6 +88,9 @@ const DetailButton = styled.div(({ color }: { color: string }) => ({
   backgroundColor: color ? color : '#89af1e',
   color: 'white',
   borderRadius: '3px',
+  '&:hover': {
+    cursor: 'pointer',
+  },
 }))
 
 const DetailsContainer = styled.div({
@@ -107,6 +115,7 @@ const StatsContainer = styled.div({
 const SkillStatContainer = styled.div({
   display: 'flex',
   alignItems: 'center',
+  justifyContent: 'space-between',
   color: '#DCD0CA',
   fontWeight: 'bold',
   fontSize: '1.2em',
@@ -121,7 +130,6 @@ const StatCount = styled.span({
   fontWeight: 'bold',
   fontSize: '1.5em',
   textAlign: 'right',
-  marginRight: '20px',
   color: 'white',
   '@media (max-height: 600px)': {
     fontSize: '1.2em',

@@ -22,6 +22,11 @@ export default class FakeCharacterGateway extends InMemoryCharacterGateway {
 
   async incrementSkill(skill: Skill, characterId: string): Promise<Character> {
     const characterUpdated = await super.incrementSkill(skill, characterId)
+    this.characters = [
+      ...this.characters.map((character) =>
+        character.id === characterUpdated.id ? characterUpdated : character
+      ),
+    ]
     this.saveCharacters()
     return Promise.resolve(characterUpdated)
   }

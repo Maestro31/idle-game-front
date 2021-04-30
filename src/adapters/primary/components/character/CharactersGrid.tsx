@@ -78,6 +78,9 @@ const AddCharacterButton = styled.div({
   ...(flexRowCenterStyle as {}),
   backgroundColor: '#291f1a',
   borderRadius: '5px',
+  '&:hover': {
+    cursor: 'pointer',
+  },
 })
 
 const EmptyCharacterCard = styled.div({

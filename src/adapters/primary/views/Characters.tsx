@@ -25,7 +25,7 @@ export default function Characters() {
     >
       {selectedCharacter && (
         <CharacterDetails
-          character={selectedCharacter}
+          characterProps={selectedCharacter}
           actionButtonProps={
             selectedCharacter.skillPoints > 0
               ? {

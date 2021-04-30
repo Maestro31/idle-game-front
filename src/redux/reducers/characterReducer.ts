@@ -15,6 +15,11 @@ const characters = (
         (character) => (charactersById[character.id] = character.toPrimitives())
       )
       return charactersById
+    case 'CHARACTER_RETRIEVED':
+      return {
+        ...state,
+        [action.payload.character.id]: action.payload.character.toPrimitives(),
+      }
     case 'CHARACTER_CREATED':
     case 'CHARACTER_UPDATED':
       const { character } = action.payload

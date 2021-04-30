@@ -4,6 +4,8 @@ import Character from '../../models/Character'
 export const CharacterActions = {
   charactersRetrieved: (characters: Character[]) =>
     createAction('CHARACTERS_RETRIEVED', { characters }),
+  characterRetrieved: (character: Character) =>
+    createAction('CHARACTER_RETRIEVED', { character }),
   characterCreated: (character: Character) =>
     createAction('CHARACTER_CREATED', { character }),
   characterCreationFailed: (errorMessage: string) =>
