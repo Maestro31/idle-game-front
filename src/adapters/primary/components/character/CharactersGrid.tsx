@@ -5,6 +5,7 @@ import addCharacterIcon from '../../assets/icons/add-character.svg'
 import arenaIcon from '../../assets/icons/arena.svg'
 import { useState } from 'react'
 import { useHistory } from 'react-router'
+import { flexRowCenterStyle, secondaryByttonStyle } from '../styles'
 
 interface CharactersGridProps {
   characters: CharacterDTO[]
@@ -74,11 +75,9 @@ const Grid = styled.div({
 })
 
 const AddCharacterButton = styled.div({
+  ...(flexRowCenterStyle as {}),
   backgroundColor: '#291f1a',
   borderRadius: '5px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
 })
 
 const EmptyCharacterCard = styled.div({
@@ -87,14 +86,12 @@ const EmptyCharacterCard = styled.div({
 })
 
 const ArenaButton = styled.div({
-  backgroundColor: '#8F7769',
+  ...(secondaryByttonStyle as {}),
+  ...(flexRowCenterStyle as {}),
   borderRadius: '5px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
   gridColumnEnd: 'span 2',
   fontSize: '2em',
-  color: 'white',
+  height: '100%',
 })
 
 const ArenaIcon = styled.img({

@@ -1,16 +1,15 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { logoutUser } from '../../../core/usecases/auth/logout-user/logoutUser'
 import { findUser } from '../../../redux/selectors/findUser'
 import Characters from './Characters'
 import { Switch, Route } from 'react-router-dom'
 import CreateCharacter from './CreateCharacter'
+import CharacterView from './CharacterView'
 
 export default function Home() {
   const user = useSelector(findUser)
   const history = useHistory()
-  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!user) {
@@ -24,6 +23,7 @@ export default function Home() {
       <Switch>
         <Route path="/create-character" component={CreateCharacter} />
         <Route exact path="/" component={Characters} />
+        <Route path="/characters/:id" component={CharacterView} />
       </Switch>
     </div>
   )

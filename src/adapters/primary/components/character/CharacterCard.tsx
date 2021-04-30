@@ -3,6 +3,7 @@ import React from 'react'
 import { CharacterDTO } from '../../../../core/models/Character'
 import characterImage from '../../assets/images/character.svg'
 import upIcon from '../../assets/icons/up.svg'
+import { flexRowCenterStyle } from '../styles'
 
 interface CharacterCardProps {
   character?: CharacterDTO
@@ -40,14 +41,12 @@ export default function CharacterCard({
 
 const Container = styled.div(
   ({ selected, up }: { selected: boolean; up: boolean }) => ({
+    ...(flexRowCenterStyle as {}),
     minWidth: '80px',
     minHeight: '80px',
     backgroundColor: '#8F7769',
     borderRadius: '5px',
     position: 'relative',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     border: selected
       ? '2px solid white'
       : up
