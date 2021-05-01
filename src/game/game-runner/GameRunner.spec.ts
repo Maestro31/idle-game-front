@@ -16,8 +16,12 @@ describe('Game Runner', () => {
   beforeEach(() => {
     const characterCreator = new CharacterCreator()
 
-    player = new FighterStub(characterCreator.createCharacterProps('John Snow'))
+    player = new FighterStub(
+      'uuid-1',
+      characterCreator.createCharacterProps('John Snow')
+    )
     opponent = new FighterStub(
+      'uuid-2',
       characterCreator.createCharacterProps('Daenerys')
     )
 
@@ -34,7 +38,8 @@ describe('Game Runner', () => {
     opponent.overrideCharacterWith({ health: 2, defense: 1 })
 
     gameRunner.run()
-    expect(gameRunner.getWinner()).toBeDefined()
+    expect(gameRunner.getWinnerId()).toBe('uuid-1')
+    expect(gameRunner.getWinnerProps()).toBeDefined()
   })
 
   it('should log all turn results', () => {
@@ -44,11 +49,11 @@ describe('Game Runner', () => {
     opponent.overrideCharacterWith({ health: 2, defense: 0, attack: 2 })
 
     gameRunner.run()
-    expect(gameLogger.getLogs()).toEqual([
+    expect(gameRunner.getLogs()).toEqual([
       {
         turn: 1,
-        assailant: player.getCharacter(),
-        assailed: opponent.getCharacter(),
+        assailant: player.getCharacterProps(),
+        assailed: opponent.getCharacterProps(),
         assaultResult: {
           attack: 1,
           damageTaken: 1,
@@ -56,8 +61,8 @@ describe('Game Runner', () => {
       },
       {
         turn: 2,
-        assailant: opponent.getCharacter(),
-        assailed: player.getCharacter(),
+        assailant: opponent.getCharacterProps(),
+        assailed: player.getCharacterProps(),
         assaultResult: {
           attack: 1,
           damageTaken: 0,
@@ -65,8 +70,8 @@ describe('Game Runner', () => {
       },
       {
         turn: 3,
-        assailant: player.getCharacter(),
-        assailed: opponent.getCharacter(),
+        assailant: player.getCharacterProps(),
+        assailed: opponent.getCharacterProps(),
         assaultResult: {
           attack: 1,
           damageTaken: 1,

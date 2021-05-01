@@ -15,7 +15,7 @@ export default class Arena {
   private turnCount = 0
 
   private onFightEndedCallback:
-    | ((winnerProps: CharacterProps) => void)
+    | ((winnerId: string, winnerProps: CharacterProps) => void)
     | null = null
   private onAssaultLogCreatedCallback:
     | ((assaultLog: AssaultLog) => void)
@@ -64,7 +64,12 @@ export default class Arena {
     this.checkEndCondition()
   }
 
-  onFightEnded(onFightEndedCallback: (winnerProps: CharacterProps) => void) {
+  onFightEnded(
+    onFightEndedCallback: (
+      winnerId: string,
+      winnerProps: CharacterProps
+    ) => void
+  ) {
     this.onFightEndedCallback = onFightEndedCallback
   }
 
@@ -82,8 +87,8 @@ export default class Arena {
     this.onAssaultLogCreatedCallback &&
       this.onAssaultLogCreatedCallback({
         turn: this.turnCount,
-        assailant: this.assailantFighter.getCharacter(),
-        assailed: this.assailedFighter.getCharacter(),
+        assailant: this.assailantFighter.getCharacterProps(),
+        assailed: this.assailedFighter.getCharacterProps(),
         assaultResult: {
           attack: attackToInflict,
           damageTaken: damageTaken,
@@ -101,13 +106,14 @@ export default class Arena {
     if (this.isAssailedFighterDead()) {
       this.isEndFight = true
       const rewardedWinnerProps = new CharacterCreator().giveReward(
-        this.assailantFighter.getCharacter()
+        this.assailantFighter.getCharacterProps()
       )
-      this.notifyForWinner(rewardedWinnerProps)
+      this.notifyForWinner(this.assailantFighter.getId(), rewardedWinnerProps)
     }
   }
 
-  private notifyForWinner(winnerProps: CharacterProps) {
-    this.onFightEndedCallback && this.onFightEndedCallback(winnerProps)
+  private notifyForWinner(winnerId: string, winnerProps: CharacterProps) {
+    this.onFightEndedCallback &&
+      this.onFightEndedCallback(winnerId, winnerProps)
   }
 }

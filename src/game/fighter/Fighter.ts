@@ -3,11 +3,15 @@ import { CharacterProps } from '../character/character.interface'
 export class Fighter {
   protected remainingHealth: number
 
-  constructor(protected characterProps: CharacterProps) {
+  constructor(private id: string, protected characterProps: CharacterProps) {
     this.remainingHealth = characterProps.health
   }
 
-  getCharacter(): CharacterProps {
+  getId(): string {
+    return this.id
+  }
+
+  getCharacterProps(): CharacterProps {
     return this.characterProps
   }
 

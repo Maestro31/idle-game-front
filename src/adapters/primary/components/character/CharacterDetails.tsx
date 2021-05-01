@@ -38,6 +38,7 @@ export default function CharacterDetails({
   return (
     <Container>
       <PreviewContainer>
+        <RankCount>{characterProps.rank}</RankCount>
         <img src={characterImage} alt="character illustration" width="75px" />
         {actionButtonProps && (
           <DetailButton
@@ -134,4 +135,13 @@ const StatCount = styled.span({
   '@media (max-height: 600px)': {
     fontSize: '1.2em',
   },
+})
+
+const RankCount = styled.div({
+  position: 'absolute',
+  top: '5px',
+  left: '5px',
+  fontWeight: 'bold',
+  fontSize: '1.5em',
+  color: '#DCE001',
 })

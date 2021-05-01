@@ -14,8 +14,14 @@ describe('Arena', () => {
   beforeEach(() => {
     const characterCreator = new CharacterCreator()
 
-    player = new FighterStub(characterCreator.createCharacterProps('David'))
-    opponent = new FighterStub(characterCreator.createCharacterProps('Goliath'))
+    player = new FighterStub(
+      'uuid-1',
+      characterCreator.createCharacterProps('David')
+    )
+    opponent = new FighterStub(
+      'uuid-2',
+      characterCreator.createCharacterProps('Goliath')
+    )
 
     randomService = new RandomStub()
     arena = new Arena(player, opponent, randomService)
@@ -93,15 +99,16 @@ describe('Arena', () => {
         defense: 1,
       })
 
-      let winnerName = null
+      let winnerId = null
       arena.onFightEnded(
-        (winnerProps: CharacterProps) => (winnerName = winnerProps.name)
+        (declaredWinnerId: string, winnerProps: CharacterProps) =>
+          (winnerId = declaredWinnerId)
       )
 
       arena.startAssault()
 
       expect(opponent.getRemainingHealth()).toBe(0)
-      expect(winnerName).toBe('John Snow')
+      expect(winnerId).toBe('uuid-1')
     })
 
     it('should declare the opponent as the winner if the player is dead', () => {
@@ -110,16 +117,17 @@ describe('Arena', () => {
       player.overrideCharacterWith({ name: 'John', health: 1, defense: 1 })
       opponent.overrideCharacterWith({ name: 'Daenerys', attack: 5 })
 
-      let winnerName = null
+      let winnerId = null
       arena.onFightEnded(
-        (winnerProps: CharacterProps) => (winnerName = winnerProps.name)
+        (declaredWinnerId: string, winnerProps: CharacterProps) =>
+          (winnerId = declaredWinnerId)
       )
 
       arena.nextTurn()
       arena.startAssault()
 
       expect(player.getRemainingHealth()).toBe(0)
-      expect(winnerName).toBe('Daenerys')
+      expect(winnerId).toBe('uuid-2')
     })
 
     it('should not permit a fight if a fighter is dead', () => {
@@ -135,9 +143,13 @@ describe('Arena', () => {
 
     it('should notify when the winner is declared', () => {
       let winnerProps = null
-      arena.onFightEnded((declaredWinnerProps: CharacterProps) => {
-        winnerProps = declaredWinnerProps
-      })
+      let winnerId = null
+      arena.onFightEnded(
+        (declaredWinnerId: string, declaredWinnerProps: CharacterProps) => {
+          winnerId = declaredWinnerId
+          winnerProps = declaredWinnerProps
+        }
+      )
 
       randomService.willRespond(2)
 
@@ -146,11 +158,12 @@ describe('Arena', () => {
 
       arena.startAssault()
       expect(winnerProps).toBeDefined()
+      expect(winnerId).toBe('uuid-1')
     })
 
     it('should increment rank and skill points by 1 for the winner', () => {
       let rank = 0
-      arena.onFightEnded((winnerProps: CharacterProps) => {
+      arena.onFightEnded((winnerId: string, winnerProps: CharacterProps) => {
         rank = winnerProps.rank
       })
 
@@ -182,8 +195,8 @@ describe('Arena', () => {
 
       expect(assaultLog).toEqual({
         turn: 1,
-        assailant: player.getCharacter(),
-        assailed: opponent.getCharacter(),
+        assailant: player.getCharacterProps(),
+        assailed: opponent.getCharacterProps(),
         assaultResult: {
           attack: 2,
           damageTaken: 2,

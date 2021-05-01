@@ -1,3 +1,4 @@
+import { FightResult } from '../core/adapters/secondary/fight/FightGatewayInterface'
 import { CharacterDTO } from '../core/models/Character'
 
 export interface AppState {
@@ -6,6 +7,7 @@ export interface AppState {
     byId: CharactersById
     errorMessage: string | null
   }
+  fightResult: FightResult | null
 }
 
 export interface AuthState {

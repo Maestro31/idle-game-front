@@ -39,7 +39,7 @@ export default class InMemoryCharacterGateway
     return Promise.resolve()
   }
 
-  private findCharacterById(id: string): Character {
+  protected findCharacterById(id: string): Character {
     const character = this.characters.find((character) => character.id === id)
 
     if (!character) {

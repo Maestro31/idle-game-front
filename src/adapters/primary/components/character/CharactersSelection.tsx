@@ -7,15 +7,15 @@ import { useState } from 'react'
 import { useHistory } from 'react-router'
 import { flexRowCenterStyle, secondaryByttonStyle } from '../styles'
 
-interface CharactersGridProps {
+interface CharactersSelectionProps {
   characters: CharacterDTO[]
   onCharacterSelectionChange: (index: number) => void
 }
 
-export default function CharactersGrid({
+export default function CharactersSelection({
   characters,
   onCharacterSelectionChange,
-}: CharactersGridProps) {
+}: CharactersSelectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const history = useHistory()
 
@@ -56,7 +56,9 @@ export default function CharactersGrid({
         </AddCharacterButton>
       )}
       {fillGridWithEmptyCard(10 - characters.length - 1)}
-      <ArenaButton onClick={() => history.push('/arena')}>
+      <ArenaButton
+        onClick={() => history.push(`/arena/${characters[currentIndex].id}`)}
+      >
         ARÈNE <ArenaIcon src={arenaIcon} height={32} width={32} />
       </ArenaButton>
     </Grid>

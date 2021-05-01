@@ -11,12 +11,14 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { Dependencies } from '../dependencies'
 import auth from './reducers/authReducer'
 import character from './reducers/characterReducer'
+import fightResult from './reducers/fightResultReducer'
 
 export const configureStore = (dependencies: Partial<Dependencies>) =>
   createStore(
     combineReducers({
       auth,
       character,
+      fightResult,
     }),
     composeWithDevTools(
       applyMiddleware(

@@ -18,8 +18,11 @@ export default class CharacterBuilder {
     return this
   }
 
-  withProps(props: CharacterProps) {
-    this.props = props
+  withProps(props: Partial<CharacterProps>) {
+    this.props = {
+      ...this.props,
+      ...props,
+    }
     return this
   }
 

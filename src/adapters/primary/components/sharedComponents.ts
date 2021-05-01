@@ -33,4 +33,5 @@ export const PageContainer = styled.div({
   alignItems: 'center',
   height: '100%',
   boxSizing: 'border-box',
+  color: 'white',
 })

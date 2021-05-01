@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { findCharacterById } from '../../../redux/selectors/findCharacterById'
 import { PageContainer } from '../components/sharedComponents'
 import CharacterDetails from '../components/character/CharacterDetails'
@@ -12,7 +12,6 @@ import { Skill } from '../../../game/character/character.interface'
 export default function CharacterView() {
   const { id } = useParams<{ id: string }>()
   const characterProps = useSelector(findCharacterById(id))
-  const history = useHistory()
   const dispatch = useDispatch()
 
   useEffect(() => {

@@ -22,6 +22,10 @@ export interface CharacterProps {
 export default class Character {
   constructor(readonly id: string, readonly props: CharacterProps) {}
 
+  getName(): string {
+    return this.props.name
+  }
+
   getSkillPoints(): number {
     return this.props.skillPoints
   }

@@ -4,7 +4,7 @@ import { retrieveCharacters } from '../../../core/usecases/character/retrieve-ch
 import { findAllCharacters } from '../../../redux/selectors/findAllCharacters'
 import { PageContainer } from '../components/sharedComponents'
 import CharacterDetails from '../components/character/CharacterDetails'
-import CharactersGrid from '../components/character/CharactersGrid'
+import CharactersSelection from '../components/character/CharactersSelection'
 import { useHistory } from 'react-router'
 
 export default function Characters() {
@@ -34,16 +34,11 @@ export default function Characters() {
                   onClick: () =>
                     history.push(`/characters/${selectedCharacter.id}`),
                 }
-              : {
-                  title: 'Afficher',
-                  color: '#362C26',
-                  onClick: () =>
-                    history.push(`/characters/${selectedCharacter.id}/details`),
-                }
+              : undefined
           }
         />
       )}
-      <CharactersGrid
+      <CharactersSelection
         characters={characters}
         onCharacterSelectionChange={(index: number) => setSelectedIndex(index)}
       />
