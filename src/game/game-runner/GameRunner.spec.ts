@@ -53,7 +53,10 @@ describe('Game Runner', () => {
       {
         turn: 1,
         assailant: player.getCharacterProps(),
-        assailed: opponent.getCharacterProps(),
+        assailed: {
+          ...opponent.getCharacterProps(),
+          health: 1,
+        },
         assaultResult: {
           attack: 1,
           damageTaken: 1,
@@ -61,7 +64,10 @@ describe('Game Runner', () => {
       },
       {
         turn: 2,
-        assailant: opponent.getCharacterProps(),
+        assailant: {
+          ...opponent.getCharacterProps(),
+          health: 1,
+        },
         assailed: player.getCharacterProps(),
         assaultResult: {
           attack: 1,
@@ -71,7 +77,10 @@ describe('Game Runner', () => {
       {
         turn: 3,
         assailant: player.getCharacterProps(),
-        assailed: opponent.getCharacterProps(),
+        assailed: {
+          ...opponent.getCharacterProps(),
+          health: 0,
+        },
         assaultResult: {
           attack: 1,
           damageTaken: 1,

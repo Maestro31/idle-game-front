@@ -7,6 +7,7 @@ export interface CharacterDTO {
   defense: number
   health: number
   rank: number
+  recoveredAt: string
 }
 
 export interface CharacterProps {
@@ -17,6 +18,7 @@ export interface CharacterProps {
   defense: number
   health: number
   rank: number
+  recoveredAt: string
 }
 
 export default class Character {
@@ -49,6 +51,7 @@ export default class Character {
       defense: this.props.defense,
       health: this.props.health,
       rank: this.props.rank,
+      recoveredAt: this.props.recoveredAt.toString(),
     }
   }
 }

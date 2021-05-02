@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { retrieveCharacters } from '../../../core/usecases/character/retrieve-characters/retrieveCharacters'
 import { findAllCharacters } from '../../../redux/selectors/findAllCharacters'

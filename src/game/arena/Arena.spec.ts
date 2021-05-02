@@ -196,7 +196,10 @@ describe('Arena', () => {
       expect(assaultLog).toEqual({
         turn: 1,
         assailant: player.getCharacterProps(),
-        assailed: opponent.getCharacterProps(),
+        assailed: {
+          ...opponent.getCharacterProps(),
+          health: 0,
+        },
         assaultResult: {
           attack: 2,
           damageTaken: 2,

@@ -2,10 +2,11 @@ import styled from '@emotion/styled'
 import { CharacterDTO } from '../../../../core/models/Character'
 import CharacterCard from './CharacterCard'
 import addCharacterIcon from '../../assets/icons/add-character.svg'
-import arenaIcon from '../../assets/icons/arena.svg'
+import battleIcon from '../../assets/icons/battle.svg'
 import { useState } from 'react'
 import { useHistory } from 'react-router'
 import { flexRowCenterStyle, secondaryByttonStyle } from '../styles'
+import { isAfter } from 'date-fns'
 
 interface CharactersSelectionProps {
   characters: CharacterDTO[]
@@ -56,11 +57,15 @@ export default function CharactersSelection({
         </AddCharacterButton>
       )}
       {fillGridWithEmptyCard(10 - characters.length - 1)}
-      <ArenaButton
-        onClick={() => history.push(`/arena/${characters[currentIndex].id}`)}
+      <BattleButton
+        onClick={() => history.push(`/battle/${characters[currentIndex].id}`)}
+        disabled={isAfter(
+          Date.parse(characters[currentIndex].recoveredAt),
+          new Date()
+        )}
       >
-        ARÈNE <ArenaIcon src={arenaIcon} height={32} width={32} />
-      </ArenaButton>
+        COMBAT <BattleIcon src={battleIcon} height={32} width={32} />
+      </BattleButton>
     </Grid>
   )
 }
@@ -90,7 +95,7 @@ const EmptyCharacterCard = styled.div({
   borderRadius: '5px',
 })
 
-const ArenaButton = styled.div({
+const BattleButton = styled.button({
   ...(secondaryByttonStyle as {}),
   ...(flexRowCenterStyle as {}),
   borderRadius: '5px',
@@ -99,6 +104,6 @@ const ArenaButton = styled.div({
   height: '100%',
 })
 
-const ArenaIcon = styled.img({
+const BattleIcon = styled.img({
   marginLeft: '10px',
 })

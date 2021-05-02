@@ -73,7 +73,10 @@ describe('Run fight', () => {
           {
             turn: 1,
             assailant: player.getProps(),
-            assailed: opponent.getProps(),
+            assailed: {
+              ...opponent.getProps(),
+              health: 0,
+            },
             assaultResult: {
               attack: 5,
               damageTaken: 5,

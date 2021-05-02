@@ -5,8 +5,10 @@ import { useHistory, useParams } from 'react-router-dom'
 import Character from '../../../core/models/Character'
 import { runFight } from '../../../core/usecases/fight/run-fight/runFight'
 import { findFightResult } from '../../../redux/selectors/findFightResult'
-import CharacterDetails from '../components/character/CharacterDetails'
+import CharacterPreview from '../components/battle/CharacterPreview'
+import LogList from '../components/battle/LogList'
 import { PageContainer, SecondaryButton } from '../components/sharedComponents'
+import { flexRowCenterStyle } from '../components/styles'
 
 export default function ArenaView() {
   const { id } = useParams<{ id: string }>()
@@ -22,29 +24,28 @@ export default function ArenaView() {
     return <div></div>
   }
 
+  const { winner, looser, logs } = fightResult
+  const isBattleWon = winner.id === id
+  const colorStyle = { color: isBattleWon ? '#6ad46c' : '#f33f3f' }
   return (
     <PageContainer>
-      <h1>
-        {fightResult.winner.id === id ? 'Victoire !' : 'Vous avez perdu !'}
+      <h1 style={colorStyle}>
+        {isBattleWon ? 'Victoire !' : 'Vous avez perdu !'}
       </h1>
-      <CharacterDetails
-        characterProps={Character.fromPrimitives(fightResult.winner).getProps()}
-      />
-      <p>Combat mené en {fightResult.logs.length} tours</p>
-      <ul>
-        {fightResult.logs.map((log, index) => (
-          <li key={index}>
-            <pre>
-              {log.assailant.name} {log.assaultResult.attack} ⚔️{' '}
-              {log.assailant.magic ===
-                log.assaultResult.attack - log.assailed.defense &&
-                'Critique Magique'}
-              {log.assailed.name} -{log.assaultResult.damageTaken} 💔{' '}
-              {log.assailed.defense} 🛡️
-            </pre>
-          </li>
-        ))}
-      </ul>
+      <CharactersPreview>
+        <CharacterPreview
+          style={{ border: '1px solid #DCE001' }}
+          characterProps={Character.fromPrimitives(winner).getProps()}
+        />
+        <CharacterPreview
+          characterProps={Character.fromPrimitives(looser).getProps()}
+        />
+      </CharactersPreview>
+      <p style={colorStyle}>
+        {winner.name} a vaincu {looser.name} en {logs.length} tours
+      </p>
+
+      <LogList logs={logs} />
       <ButtonContainer>
         <BackButton onClick={() => history.push('/')}>
           Revenir au choix des personnages
@@ -62,4 +63,9 @@ const ButtonContainer = styled.div({
 
 const BackButton = styled(SecondaryButton)({
   alignSelf: 'flex-end',
+})
+
+const CharactersPreview = styled.div({
+  ...(flexRowCenterStyle as {}),
+  columnGap: '20px',
 })

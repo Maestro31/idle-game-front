@@ -46,7 +46,6 @@ const SkillButton = styled.button({
 })
 
 const SkillName = styled.span({
-  color: 'white',
   fontSize: '1.5em',
   fontWeight: 'normal',
 })

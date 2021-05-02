@@ -1,3 +1,4 @@
+import { add } from 'date-fns'
 import CharacterNotFoundError from '../../../core/adapters/secondary/character/CharacterNotFoundError'
 import FightGatewayInterface, {
   FightResult,
@@ -29,6 +30,17 @@ export default class InMemoryFightGateway implements FightGatewayInterface {
     this.characters = [
       ...this.characters.map((character) =>
         character.id === winner.id ? winner : character
+      ),
+    ]
+
+    this.characters = [
+      ...this.characters.map((character) =>
+        character.id === player.id
+          ? Character.fromPrimitives({
+              ...character.toPrimitives(),
+              recoveredAt: add(new Date(), { hours: 1 }).toString(),
+            })
+          : character
       ),
     ]
 

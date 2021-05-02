@@ -10,6 +10,7 @@ describe('CharacterCreator', () => {
 
   describe('create character', () => {
     it('should return a character with default skill points', () => {
+      const props = characterCreator.createCharacterProps('John')
       expect(characterCreator.createCharacterProps('John')).toEqual({
         name: 'John',
         skillPoints: 12,
@@ -18,6 +19,7 @@ describe('CharacterCreator', () => {
         defense: 0,
         magic: 0,
         rank: 0,
+        recoveredAt: props.recoveredAt,
       })
     })
   })
@@ -151,6 +153,7 @@ describe('CharacterCreator', () => {
       defense: 0,
       magic: 0,
       rank: 0,
+      recoveredAt: new Date().toString(),
     }
 
     const character = act({ ...initialCharacterProps, [skill]: from })

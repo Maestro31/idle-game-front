@@ -87,8 +87,14 @@ export default class Arena {
     this.onAssaultLogCreatedCallback &&
       this.onAssaultLogCreatedCallback({
         turn: this.turnCount,
-        assailant: this.assailantFighter.getCharacterProps(),
-        assailed: this.assailedFighter.getCharacterProps(),
+        assailant: {
+          ...this.assailantFighter.getCharacterProps(),
+          health: this.assailantFighter.getRemainingHealth(),
+        },
+        assailed: {
+          ...this.assailedFighter.getCharacterProps(),
+          health: this.assailedFighter.getRemainingHealth(),
+        },
         assaultResult: {
           attack: attackToInflict,
           damageTaken: damageTaken,
@@ -108,6 +114,7 @@ export default class Arena {
       const rewardedWinnerProps = new CharacterCreator().giveReward(
         this.assailantFighter.getCharacterProps()
       )
+
       this.notifyForWinner(this.assailantFighter.getId(), rewardedWinnerProps)
     }
   }

@@ -11,7 +11,7 @@ import LocalStorageService from './adapters/secondary/storage/LocalStorageServic
 import FakeCharacterGateway from './adapters/secondary/character/FakeCharacterGateway'
 import FakeFightGateway from './adapters/secondary/fight/FakeFightGateway'
 import ConsoleGameLogger from './game/game-logger/ConsoleGameLogger'
-import RealRandom from './game/services/realRandom'
+import RealRandom from './game/services/RealRandom'
 
 const authGateway = new FakeAuthGateway()
 const gameLogger = new ConsoleGameLogger()
