@@ -10,7 +10,7 @@ export default class CharacterCreator {
       defense: 0,
       magic: 0,
       rank: 0,
-      recoveredAt: new Date().toString(),
+      recoveredAt: new Date().toISOString(),
     }
   }
 

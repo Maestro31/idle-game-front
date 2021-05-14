@@ -4,22 +4,21 @@ import AuthGatewayInterface, {
 import { UserProps } from '../../../core/models/User'
 import { User } from '../../../redux/appState.interface'
 import InvalidCredentialsError from '../../../core/adapters/secondary/auth/InvalidCredentialsError'
-import InvalidTokenError from '../../../core/adapters/secondary/auth/InvalidToken'
 
 export default class InMemoryAuthGateway implements AuthGatewayInterface {
-  protected users: { [key: string]: User } = {}
+  protected users: User[] = []
 
-  protected usersLogged: { [key: string]: User } = {}
+  protected usersLogged: User[] = []
 
   async login(email: string, _: string): Promise<LoginResponse> {
-    const user = Object.values(this.users).find((user) => user.email === email)
+    const user = this.users.find((user) => user.email === email)
 
     if (!user) {
       throw new InvalidCredentialsError()
     }
 
     const authToken = `${user.firstname.toLowerCase()}-${user.lastname.toLowerCase()}`
-    this.usersLogged[authToken] = user
+    this.usersLogged.push(user)
 
     return Promise.resolve({
       user,
@@ -27,10 +26,9 @@ export default class InMemoryAuthGateway implements AuthGatewayInterface {
     })
   }
 
-  async register(userId: string, userProps: UserProps): Promise<void> {
+  async register(userProps: UserProps): Promise<void> {
     const { email, firstname, lastname } = userProps
-    this.users[userId] = { id: userId, email, firstname, lastname }
-    return Promise.resolve()
+    this.users.push({ email, firstname, lastname })
   }
 
   async refreshUser(authToken: string): Promise<LoginResponse> {
@@ -43,19 +41,14 @@ export default class InMemoryAuthGateway implements AuthGatewayInterface {
     )
 
     if (!user) {
-      throw new InvalidTokenError()
+      throw new Error('User not found')
     }
 
-    return Promise.resolve({ user, authToken })
+    return { user, authToken }
   }
 
-  async logoutUser(authToken: string): Promise<void> {
-    delete this.usersLogged[authToken]
-    return Promise.resolve()
-  }
-
-  getUser(userId: string) {
-    return this.users[userId]
+  getUser(email: string) {
+    return this.users.find((user) => user.email === email)
   }
 
   getUsersLogged() {

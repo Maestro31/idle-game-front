@@ -153,7 +153,7 @@ describe('CharacterCreator', () => {
       defense: 0,
       magic: 0,
       rank: 0,
-      recoveredAt: new Date().toString(),
+      recoveredAt: new Date().toISOString(),
     }
 
     const character = act({ ...initialCharacterProps, [skill]: from })

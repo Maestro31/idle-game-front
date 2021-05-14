@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Skill } from '../../../game/character/character.interface'
-import CharacterCreator from '../../../game/character/CharacterCreator'
+import { Skill } from '../../../services/character.interface'
+import CharacterCreator from '../../../services/CharacterCreator'
 
 export default function useCharacterCreator() {
   const characterCreator = new CharacterCreator()

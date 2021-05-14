@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router'
+import { Route, Switch, useParams, useRouteMatch } from 'react-router'
 import { findCharacterById } from '../../../redux/selectors/findCharacterById'
 import { PageContainer } from '../components/sharedComponents'
 import CharacterDetails from '../components/character/CharacterDetails'
@@ -7,9 +7,10 @@ import React, { useEffect } from 'react'
 import { retrieveCharacter } from '../../../core/usecases/character/retrieve-character/retrieveCharacter'
 import SkillForm from '../components/character/SkillForm'
 import { incrementSkill } from '../../../core/usecases/character/update-character/incrementSkill'
-import { Skill } from '../../../game/character/character.interface'
+import { Skill } from '../../../services/character.interface'
 
 export default function CharacterView() {
+  const { path } = useRouteMatch()
   const { id } = useParams<{ id: string }>()
   const characterProps = useSelector(findCharacterById(id))
   const dispatch = useDispatch()
@@ -31,9 +32,16 @@ export default function CharacterView() {
   return (
     <PageContainer>
       <CharacterDetails characterProps={characterProps} />
-      <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
-        <SkillForm characterProps={characterProps} increment={increment} />
-      </div>
+      <Switch>
+        <Route exact path={path}>
+          <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
+            <SkillForm characterProps={characterProps} increment={increment} />
+          </div>
+        </Route>
+        <Route path={`${path}/details`}>
+          <p>Test</p>
+        </Route>
+      </Switch>
     </PageContainer>
   )
 }

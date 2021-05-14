@@ -11,7 +11,7 @@ export default class CharacterBuilder {
     magic: 0,
     defense: 0,
     rank: 0,
-    recoveredAt: new Date().toString(),
+    recoveredAt: new Date().toISOString(),
   }
 
   withId(id: string) {

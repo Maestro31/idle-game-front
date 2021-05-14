@@ -13,7 +13,7 @@ describe('Create User', () => {
 
   it('should create user with given informations', async () => {
     await store.dispatch(
-      createUser('uuid-1', {
+      createUser({
         firstname: 'Jack',
         lastname: 'Skellington',
         email: 'jack.skellington@halloween.com',
@@ -21,12 +21,12 @@ describe('Create User', () => {
       })
     )
 
-    expect(authGateway.getUser('uuid-1')).toBeDefined()
+    expect(authGateway.getUser('jack.skellington@halloween.com')).toBeDefined()
   })
 
   it('should login after user creation', async () => {
     await store.dispatch(
-      createUser('uuid-1', {
+      createUser({
         firstname: 'Jack',
         lastname: 'Skellington',
         email: 'jack.skellington@halloween.com',
@@ -34,6 +34,8 @@ describe('Create User', () => {
       })
     )
 
-    expect(authGateway.getUsersLogged()).toHaveProperty('jack-skellington')
+    expect(authGateway.getUsersLogged()[0].email).toBe(
+      'jack.skellington@halloween.com'
+    )
   })
 })

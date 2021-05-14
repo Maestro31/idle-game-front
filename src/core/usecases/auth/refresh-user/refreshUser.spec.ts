@@ -24,7 +24,7 @@ describe('Refresh user', () => {
       email: 'jack.skellington@halloween.com',
     }
 
-    await authGateway.register('uuid-1', { ...user, password: 'password' })
+    await authGateway.register({ ...user, password: 'password' })
     const data = await authGateway.login(user.email, 'password')
 
     localStorageService.setItem('auth-token', data.authToken)
@@ -35,7 +35,7 @@ describe('Refresh user', () => {
       ...initialState,
       auth: {
         ...initialState.auth,
-        user: { id: 'uuid-1', ...user },
+        user,
         status: 'connected',
       },
     })

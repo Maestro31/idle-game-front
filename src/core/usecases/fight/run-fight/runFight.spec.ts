@@ -1,6 +1,4 @@
 import InMemoryFightGateway from '../../../../adapters/secondary/fight/InMemoryFightGateway'
-import InMemoryGameLogger from '../../../../game/game-logger/InMemoryGameLogger'
-import RandomStub from '../../../../game/services/RandomStub'
 import { AppState } from '../../../../redux/appState.interface'
 import { configureStore, ReduxStore } from '../../../../redux/configureStore'
 import CharacterBuilder from '../../../builders/CharacterBuilder'
@@ -10,13 +8,9 @@ describe('Run fight', () => {
   let store: ReduxStore
   let initialState: AppState
   let fightGateway: InMemoryFightGateway
-  let randomService: RandomStub
-  let gameLogger: InMemoryGameLogger
 
   beforeEach(() => {
-    randomService = new RandomStub()
-    gameLogger = new InMemoryGameLogger()
-    fightGateway = new InMemoryFightGateway(gameLogger, randomService)
+    fightGateway = new InMemoryFightGateway()
     store = configureStore({ fightGateway })
     initialState = store.getState()
   })
@@ -38,9 +32,24 @@ describe('Run fight', () => {
       .withProps({ name: 'Daenerys', skillPoints: 0, health: 5, defense: 0 })
       .build()
 
-    randomService.willRespond(5)
+    const logs = [
+      {
+        turn: 1,
+        assailant: player.getProps(),
+        assailed: {
+          ...opponent.getProps(),
+          health: 0,
+        },
+        assaultResult: {
+          attack: 5,
+          damageTaken: 5,
+        },
+      },
+    ]
 
-    fightGateway.feed([player, opponent])
+    fightGateway.feed(player)
+    fightGateway.feedOpponent(opponent)
+    fightGateway.feedLogs(logs)
 
     await store.dispatch(runFight('uuid-1'))
 
@@ -53,8 +62,6 @@ describe('Run fight', () => {
           'uuid-1': {
             id: 'uuid-1',
             ...player.getProps(),
-            skillPoints: 1,
-            rank: 1,
           },
         },
       },
@@ -62,27 +69,12 @@ describe('Run fight', () => {
         winner: {
           id: 'uuid-1',
           ...player.getProps(),
-          skillPoints: 1,
-          rank: 1,
         },
         looser: {
           id: 'uuid-2',
           ...opponent.getProps(),
         },
-        logs: [
-          {
-            turn: 1,
-            assailant: player.getProps(),
-            assailed: {
-              ...opponent.getProps(),
-              health: 0,
-            },
-            assaultResult: {
-              attack: 5,
-              damageTaken: 5,
-            },
-          },
-        ],
+        logs,
       },
     })
   })

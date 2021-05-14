@@ -1,9 +1,9 @@
 import React from 'react'
 import InputCharacterSkill from './InputCharacterSkill'
 import styled from '@emotion/styled'
-import { Skill } from '../../../../game/character/character.interface'
+import { Skill } from '../../../../services/character.interface'
 import { flexColumnStyle } from '../styles'
-import { CharacterProps } from '../../../../game/character/character.interface'
+import { CharacterProps } from '../../../../services/character.interface'
 
 interface SkillFormProps {
   characterProps: CharacterProps

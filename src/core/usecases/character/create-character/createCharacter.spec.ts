@@ -17,43 +17,16 @@ describe('Create character', () => {
   })
 
   it('should create character with the given informations', async () => {
-    const character = new CharacterBuilder().withId('uuid-1').build()
-
-    await store.dispatch(createCharacter(character))
-
-    expect(store.getState()).toEqual({
-      ...initialState,
-      character: {
-        byId: {
-          ...initialState.character.byId,
-          [character.id]: character.toPrimitives(),
-        },
-        errorMessage: null,
-      },
-    })
-  })
-
-  it('should not permit to create an eleventh character', async () => {
-    let characters: Character[] = []
-
-    for (let i = 0; i < 10; i++) {
-      characters.push(new CharacterBuilder().withId(`uuid-${i}`).build())
+    const characterPayload = {
+      name: 'John',
+      skillPoints: 12,
+      health: 13,
+      attack: 0,
+      magic: 0,
+      defense: 0,
     }
 
-    characterGateway.feed(characters)
-
-    const additionnalCharacter = new CharacterBuilder()
-      .withId('uuid-10')
-      .build()
-
-    await store.dispatch(createCharacter(additionnalCharacter))
-
-    expect(store.getState()).toEqual({
-      ...initialState,
-      character: {
-        ...initialState.character,
-        errorMessage: 'Unable to add an additional character',
-      },
-    })
+    await store.dispatch(createCharacter(characterPayload))
+    expect(characterGateway.getLastArgs()).toEqual(characterPayload)
   })
 })

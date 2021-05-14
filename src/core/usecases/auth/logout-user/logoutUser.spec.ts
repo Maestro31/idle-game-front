@@ -3,7 +3,6 @@ import InMemoryLocalStorage from '../../../../adapters/secondary/storage/InMemor
 import { AppState } from '../../../../redux/appState.interface'
 import { ReduxStore, configureStore } from '../../../../redux/configureStore'
 import { loginUser } from '../login-user/loginUser'
-import { refreshUser } from '../refresh-user/refreshUser'
 import { logoutUser } from './logoutUser'
 
 describe('Logout user', () => {
@@ -23,7 +22,7 @@ describe('Logout user', () => {
   })
 
   function setupTests() {
-    authGateway.register('uuid-1', {
+    authGateway.register({
       firstname: 'Jack',
       lastname: 'Skellington',
       email: 'jack.skellington@halloween.com',

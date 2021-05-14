@@ -1,5 +1,13 @@
-import AssaultLog from '../../../../game/game-logger/AssaultLog'
-import { CharacterDTO } from '../../../models/Character'
+import { CharacterDTO, CharacterProps } from '../../../models/Character'
+export interface AssaultLog {
+  turn: number
+  assailant: CharacterProps
+  assailed: CharacterProps
+  assaultResult: {
+    attack: number
+    damageTaken: number
+  }
+}
 
 export default interface FightGatewayInterface {
   runFight(id: string): Promise<FightResult>

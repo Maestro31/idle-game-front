@@ -1,26 +1,47 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Formik } from 'formik'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createUser } from '../../../core/usecases/auth/create-user/createUser'
-import { v4 as uuid } from 'uuid'
-import { FormLayout, InputText, PageContainer, PrimaryButton, TextLink } from '../components/sharedComponents'
+import {
+  FormLayout,
+  InputText,
+  PageContainer,
+  PrimaryButton,
+  TextLink,
+} from '../components/sharedComponents'
 import FormContainer from '../components/FormContainer'
 import styled from '@emotion/styled'
 import * as Yup from 'yup'
+import { useHistory } from 'react-router'
+import { findAuthenticationStatus } from '../../../redux/selectors/findAuthenticationStatus'
 
 interface RegisterFormValues {
-  firstname: string,
-  lastname: string,
-  email: string,
-  password: string,
-  passwordConfirmation: string,
+  firstname: string
+  lastname: string
+  email: string
+  password: string
+  passwordConfirmation: string
 }
 
 export default function Register() {
   const dispatch = useDispatch()
+  const history = useHistory()
 
-  const submitRegisterForm = ({firstname, lastname, email, password}: RegisterFormValues) => {
-    dispatch(createUser(uuid(), {firstname, lastname, email, password}))
+  const status = useSelector(findAuthenticationStatus)
+
+  useEffect(() => {
+    if (status === 'connected') {
+      history.replace('/')
+    }
+  }, [status, history])
+
+  const submitRegisterForm = ({
+    firstname,
+    lastname,
+    email,
+    password,
+  }: RegisterFormValues) => {
+    dispatch(createUser({ firstname, lastname, email, password }))
   }
 
   const initialValues: RegisterFormValues = {
@@ -36,50 +57,56 @@ export default function Register() {
     lastname: Yup.string().required('Nom requis'),
     email: Yup.string().email('Format email invalide').required('Email requis'),
     password: Yup.string().required('Mot de passe requis'),
-    passwordConfirmation: Yup.string()
-     .oneOf([Yup.ref('password'), null], 'Mauvaise confirmation du mot de passe'),
+    passwordConfirmation: Yup.string().oneOf(
+      [Yup.ref('password'), null],
+      'Mauvaise confirmation du mot de passe'
+    ),
   })
 
   return (
     <PageContainer data-testid="register-view">
       <FormContainer title="Créer mon compte">
-        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={submitRegisterForm}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={submitRegisterForm}
+        >
           {({ errors, touched }) => (
             <FormLayout>
-              <InputText 
+              <InputText
                 placeholder="Prénom"
-                type="firstname" 
+                type="firstname"
                 name="firstname"
                 error={touched.firstname && errors.firstname}
               />
-              <InputText 
+              <InputText
                 placeholder="Nom"
-                type="lastname" 
+                type="lastname"
                 name="lastname"
                 error={touched.lastname && errors.lastname}
               />
-              <InputText 
+              <InputText
                 placeholder="Email"
-                type="email" 
+                type="email"
                 name="email"
                 error={touched.email && errors.email}
               />
-              <InputText 
-                style={{marginTop: "40px"}} 
+              <InputText
+                style={{ marginTop: '40px' }}
                 placeholder="Mot de passe"
-                type="password" 
+                type="password"
                 name="password"
                 error={touched.password && errors.password}
               />
-              <InputText 
+              <InputText
                 placeholder="Confirmation du mot de passe"
-                type="password" 
+                type="password"
                 name="passwordConfirmation"
-                error={touched.passwordConfirmation && errors.passwordConfirmation}
+                error={
+                  touched.passwordConfirmation && errors.passwordConfirmation
+                }
               />
-              <RegisterButton type="submit">
-                Créer mon compte
-              </RegisterButton>
+              <RegisterButton type="submit">Créer mon compte</RegisterButton>
               <LoginLink to="/login">J'ai déjà un compte</LoginLink>
             </FormLayout>
           )}
@@ -90,9 +117,9 @@ export default function Register() {
 }
 
 const RegisterButton = styled(PrimaryButton)({
-  marginTop: "10px",
+  marginTop: '10px',
 })
 
 const LoginLink = styled(TextLink)({
-  marginTop: '20px'
+  marginTop: '20px',
 })

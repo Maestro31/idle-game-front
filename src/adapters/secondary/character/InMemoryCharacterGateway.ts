@@ -1,42 +1,42 @@
-import CharacterGatewayInterface from '../../../core/adapters/secondary/character/CharacterGatewayInterface'
-import CharacterLimitReachedError from '../../../core/adapters/secondary/character/CharacterLimitReachedError'
+import CharacterGatewayInterface, {
+  CreateCharacterPayload,
+} from '../../../core/adapters/secondary/character/CharacterGatewayInterface'
 import CharacterNotFoundError from '../../../core/adapters/secondary/character/CharacterNotFoundError'
-import InsufficientSkillPointsError from '../../../core/adapters/secondary/character/InsufficientSkillPointsError'
 import CharacterBuilder from '../../../core/builders/CharacterBuilder'
 import Character from '../../../core/models/Character'
-import { Skill } from '../../../game/character/character.interface'
-import CharacterCreator from '../../../game/character/CharacterCreator'
+import { Skill } from '../../../services/character.interface'
+import CharacterCreator from '../../../services/CharacterCreator'
 export default class InMemoryCharacterGateway
-  implements CharacterGatewayInterface {
+  implements CharacterGatewayInterface
+{
   protected characters: Character[] = []
   private characterCreator: CharacterCreator = new CharacterCreator()
+  private lastArgs: any
 
   async retrieveCharacters(): Promise<Character[]> {
-    return Promise.resolve(this.characters)
+    return this.characters
   }
 
   async retrieveCharacter(characterId: string): Promise<Character> {
-    const character = this.findCharacterById(characterId)
-    return Promise.resolve(character)
+    return this.findCharacterById(characterId)
   }
 
-  async createCharacter(character: Character): Promise<void> {
-    this.guardShouldNotHaveMoreThanTenCharacters()
-    this.characters.push(character)
+  async createCharacter(payload: CreateCharacterPayload): Promise<void> {
+    this.lastArgs = payload
   }
 
-  async incrementSkill(skill: Skill, characterId: string): Promise<Character> {
-    const character = this.findCharacterById(characterId)
-    this.guardShouldHaveEnoughSkillPoints(skill, character)
-    const characterUpdated = this.updateCharacter(skill, character)
-    return Promise.resolve(characterUpdated)
+  async incrementSkill(skill: Skill, characterId: string): Promise<void> {
+    this.characters = this.characters.map((character) =>
+      character.id === characterId
+        ? this.updateCharacter(skill, this.findCharacterById(characterId))
+        : character
+    )
   }
 
   async deleteCharacter(characterId: string): Promise<void> {
     this.characters = this.characters.filter(
       (character) => character.id !== characterId
     )
-    return Promise.resolve()
   }
 
   protected findCharacterById(id: string): Character {
@@ -53,21 +53,8 @@ export default class InMemoryCharacterGateway
     this.characters = characters
   }
 
-  private guardShouldHaveEnoughSkillPoints(
-    skill: Skill,
-    character: Character
-  ): void {
-    if (
-      this.characterCreator.hasNotEnoughSkillPoints(skill, character.getProps())
-    ) {
-      throw new InsufficientSkillPointsError()
-    }
-  }
-
-  private guardShouldNotHaveMoreThanTenCharacters() {
-    if (this.characters.length + 1 > 10) {
-      throw new CharacterLimitReachedError()
-    }
+  getLastArgs() {
+    return this.lastArgs
   }
 
   private updateCharacter(skill: Skill, character: Character) {

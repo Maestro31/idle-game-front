@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React from 'react'
-import { CharacterProps } from '../../../../game/character/character.interface'
+import { CharacterProps } from '../../../../services/character.interface'
 import characterImage from '../../assets/images/character.svg'
 import { flexRowCenterStyle } from '../styles'
 

@@ -3,21 +3,17 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import FakeAuthGateway from './adapters/secondary/auth/FakeAuthGateway'
 import { configureStore } from './redux/configureStore'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import LocalStorageService from './adapters/secondary/storage/LocalStorageService'
-import FakeCharacterGateway from './adapters/secondary/character/FakeCharacterGateway'
-import FakeFightGateway from './adapters/secondary/fight/FakeFightGateway'
-import ConsoleGameLogger from './game/game-logger/ConsoleGameLogger'
-import RealRandom from './game/services/RealRandom'
+import RealAuthGateway from './adapters/secondary/auth/RealAuthGateway'
+import RealCharacterGateway from './adapters/secondary/character/RealCharacterGateway'
+import RealFightGateway from './adapters/secondary/fight/RealFightGateway'
 
-const authGateway = new FakeAuthGateway()
-const gameLogger = new ConsoleGameLogger()
-const randService = new RealRandom()
-const fightGateway = new FakeFightGateway(gameLogger, randService)
-const characterGateway = new FakeCharacterGateway()
+const authGateway = new RealAuthGateway()
+const fightGateway = new RealFightGateway()
+const characterGateway = new RealCharacterGateway()
 const localStorageService = new LocalStorageService()
 const store = configureStore({
   authGateway,

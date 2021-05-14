@@ -34,7 +34,12 @@ export default function Characters() {
                   onClick: () =>
                     history.push(`/characters/${selectedCharacter.id}`),
                 }
-              : undefined
+              : {
+                  title: 'Afficher',
+                  color: '#362C26',
+                  onClick: () =>
+                    history.push(`/characters/${selectedCharacter.id}/details`),
+                }
           }
         />
       )}

@@ -1,4 +1,5 @@
 import { ActionsUnion, createAction } from '../../../redux/customActions'
+import { CreateCharacterPayload } from '../../adapters/secondary/character/CharacterGatewayInterface'
 import Character from '../../models/Character'
 
 export const CharacterActions = {
@@ -6,7 +7,7 @@ export const CharacterActions = {
     createAction('CHARACTERS_RETRIEVED', { characters }),
   characterRetrieved: (character: Character) =>
     createAction('CHARACTER_RETRIEVED', { character }),
-  characterCreated: (character: Character) =>
+  characterCreated: (character: CreateCharacterPayload) =>
     createAction('CHARACTER_CREATED', { character }),
   characterCreationFailed: (errorMessage: string) =>
     createAction('CHARACTER_ERROR', { errorMessage }),

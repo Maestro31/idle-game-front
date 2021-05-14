@@ -20,7 +20,6 @@ const characters = (
         ...state,
         [action.payload.character.id]: action.payload.character.toPrimitives(),
       }
-    case 'CHARACTER_CREATED':
     case 'CHARACTER_UPDATED':
       const { character } = action.payload
       return {

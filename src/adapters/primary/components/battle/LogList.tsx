@@ -1,6 +1,5 @@
 import styled from '@emotion/styled'
-import AssaultLog from '../../../../game/game-logger/AssaultLog'
-import { flexRowCenterStyle } from '../styles'
+import { AssaultLog } from '../../../../core/adapters/secondary/fight/FightGatewayInterface'
 
 interface LogListProps {
   logs: AssaultLog[]

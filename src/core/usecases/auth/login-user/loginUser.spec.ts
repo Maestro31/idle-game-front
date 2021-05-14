@@ -12,7 +12,7 @@ describe('Login User', () => {
 
   beforeEach(() => {
     authGateway = new InMemoryAuthGateway()
-    authGateway.register('uuid-1', {
+    authGateway.register({
       firstname: 'Jack',
       lastname: 'Skellington',
       email: 'jack.skellington@halloween.com',
@@ -30,7 +30,6 @@ describe('Login User', () => {
     )
 
     const user = {
-      id: 'uuid-1',
       firstname: 'Jack',
       lastname: 'Skellington',
       email: 'jack.skellington@halloween.com',
@@ -41,7 +40,7 @@ describe('Login User', () => {
     })
 
     const usersLogged = authGateway.getUsersLogged()
-    expect(usersLogged['jack-skellington']).toEqual(user)
+    expect(usersLogged[0]).toEqual(user)
   })
 
   it('should not login user when credentials are incorrect', async () => {

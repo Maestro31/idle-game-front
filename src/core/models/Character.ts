@@ -51,7 +51,7 @@ export default class Character {
       defense: this.props.defense,
       health: this.props.health,
       rank: this.props.rank,
-      recoveredAt: this.props.recoveredAt.toString(),
+      recoveredAt: this.props.recoveredAt,
     }
   }
 }

@@ -1,8 +1,6 @@
 import { useDispatch } from 'react-redux'
-import Character from '../../../core/models/Character'
 import { createCharacter } from '../../../core/usecases/character/create-character/createCharacter'
 import useCharacterCreator from '../hooks/useCharacterCreator'
-import { v4 as uuid } from 'uuid'
 import { useHistory } from 'react-router-dom'
 import CharacterDetails from '../components/character/CharacterDetails'
 import styled from '@emotion/styled'
@@ -26,11 +24,8 @@ export default function CreateCharacter() {
   const history = useHistory()
 
   const submitCharacter = () => {
-    dispatch(
-      createCharacter(
-        Character.fromPrimitives({ id: uuid(), ...characterProps })
-      )
-    )
+    const { rank, recoveredAt, ...payload } = characterProps
+    dispatch(createCharacter(payload))
     history.push('/')
   }
 

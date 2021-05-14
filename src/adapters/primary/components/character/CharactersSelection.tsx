@@ -3,7 +3,7 @@ import { CharacterDTO } from '../../../../core/models/Character'
 import CharacterCard from './CharacterCard'
 import addCharacterIcon from '../../assets/icons/add-character.svg'
 import battleIcon from '../../assets/icons/battle.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router'
 import { flexRowCenterStyle, secondaryByttonStyle } from '../styles'
 import { isAfter } from 'date-fns'
@@ -19,6 +19,15 @@ export default function CharactersSelection({
 }: CharactersSelectionProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const history = useHistory()
+  const [battleDisabled, setBattleDisabled] = useState(false)
+
+  const battleUnavailable = (character: CharacterDTO): boolean => {
+    return character && isAfter(Date.parse(character.recoveredAt), new Date())
+  }
+
+  useEffect(() => {
+    setBattleDisabled(battleUnavailable(characters[currentIndex]))
+  }, [characters, currentIndex])
 
   function fillGridWithEmptyCard(count: number) {
     const elements: JSX.Element[] = []
@@ -31,6 +40,10 @@ export default function CharactersSelection({
   const onCharacterSelected = (index: number) => (e: React.MouseEvent) => {
     setCurrentIndex(index)
     onCharacterSelectionChange(index)
+
+    if (characters[currentIndex]) {
+      setBattleDisabled(battleUnavailable(characters[currentIndex]))
+    }
   }
 
   return (
@@ -59,10 +72,7 @@ export default function CharactersSelection({
       {fillGridWithEmptyCard(10 - characters.length - 1)}
       <BattleButton
         onClick={() => history.push(`/battle/${characters[currentIndex].id}`)}
-        disabled={isAfter(
-          Date.parse(characters[currentIndex].recoveredAt),
-          new Date()
-        )}
+        disabled={battleDisabled}
       >
         COMBAT <BattleIcon src={battleIcon} height={32} width={32} />
       </BattleButton>
