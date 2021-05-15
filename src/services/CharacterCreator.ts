@@ -1,4 +1,5 @@
-import { CharacterProps, Skill } from './character.interface'
+import { Skill } from '../core/adapters/secondary/character/CharacterGatewayInterface'
+import { CharacterProps } from './character.interface'
 
 export default class CharacterCreator {
   createCharacterProps(name: string): CharacterProps {
@@ -44,14 +45,6 @@ export default class CharacterCreator {
     }
   }
 
-  giveReward(characterProps: CharacterProps): CharacterProps {
-    return {
-      ...characterProps,
-      rank: characterProps.rank + 1,
-      skillPoints: characterProps.skillPoints + 1,
-    }
-  }
-
   hasNotEnoughSkillPoints(
     skill: Skill,
     characterProps: CharacterProps
@@ -62,7 +55,7 @@ export default class CharacterCreator {
     )
   }
 
-  private cannotBeDecremented(skill: Skill, characterProps: CharacterProps) {
+  cannotBeDecremented(skill: Skill, characterProps: CharacterProps) {
     return (
       characterProps[skill] === 0 ||
       (skill === 'health' && characterProps.health === 10)

@@ -8,5 +8,3 @@ export interface CharacterProps {
   rank: number
   recoveredAt: string
 }
-
-export type Skill = 'health' | 'attack' | 'defense' | 'magic'

@@ -17,6 +17,7 @@ export default function CreateCharacter() {
     characterProps,
     increment,
     decrement,
+    cannotBeDecremented,
     validCharacter,
     updateCharacterName,
   } = useCharacterCreator()
@@ -24,8 +25,7 @@ export default function CreateCharacter() {
   const history = useHistory()
 
   const submitCharacter = () => {
-    const { rank, recoveredAt, ...payload } = characterProps
-    dispatch(createCharacter(payload))
+    dispatch(createCharacter(characterProps))
     history.push('/')
   }
 
@@ -43,6 +43,7 @@ export default function CreateCharacter() {
           characterProps={characterProps}
           increment={increment}
           decrement={decrement}
+          cannotBeDecremented={cannotBeDecremented}
         />
         <ButtonContainer>
           <CreateCharacterButton

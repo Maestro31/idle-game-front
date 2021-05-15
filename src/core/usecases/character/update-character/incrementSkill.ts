@@ -1,5 +1,5 @@
-import { Skill } from '../../../../services/character.interface'
 import { ThunkResult } from '../../../../redux/configureStore'
+import { Skill } from '../../../adapters/secondary/character/CharacterGatewayInterface'
 import { CharacterActions } from '../actionCreators'
 
 export const incrementSkill =

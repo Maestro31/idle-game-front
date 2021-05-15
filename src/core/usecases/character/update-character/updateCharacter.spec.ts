@@ -1,7 +1,7 @@
 import InMemoryCharacterGateway from '../../../../adapters/secondary/character/InMemoryCharacterGateway'
-import { Skill } from '../../../../services/character.interface'
 import { AppState } from '../../../../redux/appState.interface'
 import { ReduxStore, configureStore } from '../../../../redux/configureStore'
+import { Skill } from '../../../adapters/secondary/character/CharacterGatewayInterface'
 import CharacterBuilder from '../../../builders/CharacterBuilder'
 import { incrementSkill } from './incrementSkill'
 
@@ -31,19 +31,9 @@ describe('Update character', () => {
         characterGateway.feed([character])
 
         await store.dispatch(incrementSkill(skill as Skill, character.id))
-
-        expect(store.getState()).toEqual({
-          ...initialState,
-          character: {
-            ...initialState.character,
-            byId: {
-              [character.id]: {
-                ...character.toPrimitives(),
-                [skill]: 1,
-                skillPoints: 0,
-              },
-            },
-          },
+        expect(characterGateway.getLastArgs()).toEqual({
+          skill,
+          characterId: character.id,
         })
       })
     }

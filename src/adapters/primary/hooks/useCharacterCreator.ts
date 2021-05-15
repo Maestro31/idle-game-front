@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Skill } from '../../../services/character.interface'
+import { Skill } from '../../../core/adapters/secondary/character/CharacterGatewayInterface'
 import CharacterCreator from '../../../services/CharacterCreator'
 
 export default function useCharacterCreator() {
@@ -17,6 +17,9 @@ export default function useCharacterCreator() {
     setCharacterProps(characterCreator.decrement(skill, characterProps))
   }
 
+  const cannotBeDecremented = (skill: Skill) =>
+    characterCreator.cannotBeDecremented(skill, characterProps)
+
   const updateCharacterName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value
     setValidCharacter(name.length >= 3)
@@ -27,6 +30,7 @@ export default function useCharacterCreator() {
     updateCharacterName,
     increment,
     decrement,
+    cannotBeDecremented,
     validCharacter,
     characterProps,
   }

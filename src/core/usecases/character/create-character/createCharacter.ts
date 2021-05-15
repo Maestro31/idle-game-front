@@ -4,10 +4,10 @@ import { CharacterActions } from '../actionCreators'
 import { retrieveCharacters } from '../retrieve-characters/retrieveCharacters'
 
 export const createCharacter =
-  (character: CreateCharacterPayload): ThunkResult<Promise<void>> =>
+  (payload: CreateCharacterPayload): ThunkResult<Promise<void>> =>
   async (dispatch, getState, { characterGateway }) => {
     try {
-      await characterGateway.createCharacter(character)
+      await characterGateway.createCharacter(payload)
       dispatch(retrieveCharacters)
     } catch (e) {
       dispatch(CharacterActions.characterCreationFailed(e.message))

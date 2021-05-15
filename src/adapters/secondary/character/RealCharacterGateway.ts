@@ -1,8 +1,8 @@
 import CharacterGatewayInterface, {
   CreateCharacterPayload,
+  Skill,
 } from '../../../core/adapters/secondary/character/CharacterGatewayInterface'
 import Character from '../../../core/models/Character'
-import { Skill } from '../../../services/character.interface'
 import ApiGateway from '../ApiGateway'
 
 export default class RealCharacterGateway

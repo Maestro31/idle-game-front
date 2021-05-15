@@ -17,22 +17,7 @@ describe('Delete character', () => {
   })
 
   it('should delete the character with the given id', async () => {
-    const character = new CharacterBuilder().withId('uuid-1').build()
-
-    characterGateway.createCharacter(character)
-    store.dispatch(CharacterActions.characterCreated(character))
-
-    await store.dispatch(deleteCharacter(character.id))
-
-    const characters = await characterGateway.retrieveCharacters()
-
-    expect(characters).toHaveLength(0)
-    expect(store.getState()).toEqual({
-      ...initialState,
-      character: {
-        ...initialState.character,
-        byId: {},
-      },
-    })
+    await store.dispatch(deleteCharacter('uuid-character-1'))
+    expect(characterGateway.getLastArgs()).toBe('uuid-character-1')
   })
 })

@@ -20,7 +20,6 @@ export default function Home() {
 
   return (
     <div data-testid="home-view" style={{ height: '100%' }}>
-      {/* <button onClick={() => dispatch(logoutUser)}>Se déconnecter</button> */}
       <Switch>
         <Route path="/create-character" component={CreateCharacter} />
         <Route exact path="/" component={Characters} />
