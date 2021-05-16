@@ -32,13 +32,14 @@ export default function Characters() {
                   title: 'Améliorer',
                   color: '#89af1e',
                   onClick: () =>
-                    history.push(`/characters/${selectedCharacter.id}`),
+                    history.push(`/characters/${selectedCharacter.id}/up`),
                 }
               : {
                   title: 'Afficher',
-                  color: '#362C26',
+                  color:
+                    selectedCharacter.skillPoints > 0 ? '#89af1e' : '#362C26',
                   onClick: () =>
-                    history.push(`/characters/${selectedCharacter.id}/details`),
+                    history.push(`/characters/${selectedCharacter.id}/history`),
                 }
           }
         />

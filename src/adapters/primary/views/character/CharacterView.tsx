@@ -5,7 +5,8 @@ import {
   useHistory,
   useParams,
   useRouteMatch,
-} from 'react-router'
+  NavLink,
+} from 'react-router-dom'
 import { findCharacterById } from '../../../../redux/selectors/findCharacterById'
 import { findBattleResultsByCharacterId } from '../../../../redux/selectors/battleSelectors'
 import { PageContainer } from '../../components/sharedComponents'
@@ -20,9 +21,10 @@ import { Skill } from '../../../../core/adapters/secondary/character/CharacterGa
 import { retrieveBattleResults } from '../../../../core/usecases/character/retrieve-battle-results/retrieveBattleResults'
 import TableView from '../../components/TableView'
 import HomeButton from '../../components/HomeButton'
+import { flexRowCenterStyle } from '../../components/styles'
 
 export default function CharacterView() {
-  const { path } = useRouteMatch()
+  const { path, url } = useRouteMatch()
   const { id } = useParams<{ id: string }>()
   const characterProps = useSelector(findCharacterById(id))
   const dispatch = useDispatch()
@@ -55,13 +57,21 @@ export default function CharacterView() {
           },
         }}
       />
+      <NavMenu>
+        <li>
+          <NavMenuLink to={`${url}/history`}>Historique de combat</NavMenuLink>
+        </li>
+        <li>
+          <NavMenuLink strict to={`${url}/up`}>
+            Amélioration{' '}
+            {characterProps.skillPoints > 0 && (
+              <SkillPointsCount>{characterProps.skillPoints}</SkillPointsCount>
+            )}
+          </NavMenuLink>
+        </li>
+      </NavMenu>
       <Switch>
-        <Route exact path={path}>
-          <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
-            <SkillForm characterProps={characterProps} increment={increment} />
-          </div>
-        </Route>
-        <Route path={`${path}/details`}>
+        <Route path={`${path}/history`}>
           <TableView>
             {battleResults &&
               battleResults.map((battleResult, index) => (
@@ -81,6 +91,11 @@ export default function CharacterView() {
               ))}
           </TableView>
         </Route>
+        <Route exact path={`${path}/up`}>
+          <div style={{ width: '100%', maxWidth: '300px', margin: '0 auto' }}>
+            <SkillForm characterProps={characterProps} increment={increment} />
+          </div>
+        </Route>
       </Switch>
       <HomeButton />
     </PageContainer>
@@ -94,3 +109,39 @@ const BattleResult = styled.tr(
     },
   })
 )
+
+const NavMenu = styled.ul({
+  ...(flexRowCenterStyle as {}),
+  listStyle: 'none',
+  margin: 0,
+  padding: 0,
+  height: '48px',
+  width: '100%',
+  marginTop: '8px',
+
+  '& > li': {
+    flexGrow: 1,
+    ...(flexRowCenterStyle as {}),
+    height: '100%',
+  },
+})
+
+const NavMenuLink = styled(NavLink)({
+  textDecoration: 'none',
+  color: 'white',
+  ...(flexRowCenterStyle as {}),
+  height: '100%',
+  width: '100%',
+  borderBottom: '2px solid #5f4130',
+
+  '&.active': {
+    borderBottomColor: '#DCE001',
+  },
+})
+
+const SkillPointsCount = styled.span({
+  fontSize: '1.2em',
+  fontWeight: 'bold',
+  color: '#DCE001',
+  marginLeft: '10px',
+})
