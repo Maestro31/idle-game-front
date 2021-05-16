@@ -12,7 +12,11 @@ export default class RealFightGateway
   }
 
   async runFight(id: string): Promise<FightResult> {
-    const { data } = await this.client().post('/', { characterID: id })
-    return data
+    try {
+      const { data } = await this.client().post('/', { characterID: id })
+      return data
+    } catch (e) {
+      throw new Error(e.response.data.message)
+    }
   }
 }

@@ -8,8 +8,13 @@ export default class InMemoryFightGateway implements FightGatewayInterface {
   private character!: Character
   private opponent!: Character
   private logs: AssaultLog[] = []
+  private nextError: Error | null = null
 
   async runFight(characterID: string): Promise<FightResult> {
+    if (this.nextError) {
+      throw this.nextError
+    }
+
     return this.buildFightResult(this.character, this.opponent, this.logs)
   }
 
@@ -23,6 +28,10 @@ export default class InMemoryFightGateway implements FightGatewayInterface {
 
   feedOpponent(character: Character) {
     this.opponent = character
+  }
+
+  willThrow(error: Error) {
+    this.nextError = error
   }
 
   private buildFightResult(

@@ -30,11 +30,9 @@ export default function CharacterView() {
   const battleResults = useSelector(findBattleResultsByCharacterId(id))
 
   useEffect(() => {
-    if (!characterProps) {
-      dispatch(retrieveCharacter(id))
-      dispatch(retrieveBattleResults(id))
-    }
-  }, [dispatch, characterProps, id])
+    dispatch(retrieveCharacter(id))
+    dispatch(retrieveBattleResults(id))
+  }, [dispatch, id])
 
   if (!characterProps) {
     return <div></div>

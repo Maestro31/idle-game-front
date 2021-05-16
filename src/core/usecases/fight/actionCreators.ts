@@ -5,6 +5,8 @@ export const FightActions = {
   fightStarted: () => createAction('FIGHT_STARTED'),
   fightEnded: (fightResult: FightResult) =>
     createAction('FIGHT_ENDED', { fightResult }),
+  fightFailed: (errorMessage: string) =>
+    createAction('FIGHT_FAILED', { errorMessage }),
 }
 
 export type FightActionTypes = ActionsUnion<typeof FightActions>

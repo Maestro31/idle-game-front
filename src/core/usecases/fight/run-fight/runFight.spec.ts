@@ -1,6 +1,7 @@
 import InMemoryFightGateway from '../../../../adapters/secondary/fight/InMemoryFightGateway'
 import { AppState } from '../../../../redux/appState.interface'
 import { configureStore, ReduxStore } from '../../../../redux/configureStore'
+import NoOpponentFoundException from '../../../adapters/secondary/fight/NoOpponentFoundException'
 import CharacterBuilder from '../../../builders/CharacterBuilder'
 import { runFight } from './runFight'
 
@@ -16,6 +17,47 @@ describe('Run fight', () => {
   })
 
   it('should run a match with the given character and store the result', async () => {
+    const { player, opponent, logs } = prepareBattle()
+
+    await store.dispatch(runFight('uuid-1'))
+
+    expect(store.getState()).toEqual({
+      ...initialState,
+      fightResult: {
+        ...initialState.fightResult,
+        data: {
+          winner: {
+            id: 'uuid-1',
+            ...player.getProps(),
+          },
+          looser: {
+            id: 'uuid-2',
+            ...opponent.getProps(),
+          },
+          logs,
+          draw: false,
+        },
+        fetching: false,
+      },
+    })
+  })
+
+  it('should return an error message when no one opponnent found', async () => {
+    prepareBattle()
+    fightGateway.willThrow(new NoOpponentFoundException())
+
+    await store.dispatch(runFight('uuid-1'))
+    expect(store.getState()).toEqual({
+      ...initialState,
+      fightResult: {
+        data: null,
+        errorMessage: 'Unable to find an opponent for your fighter',
+        fetching: false,
+      },
+    })
+  })
+
+  function prepareBattle() {
     const player = new CharacterBuilder()
       .withId('uuid-1')
       .withProps({
@@ -35,9 +77,9 @@ describe('Run fight', () => {
     const logs = [
       {
         turn: 1,
-        assailant: player.getProps(),
+        assailant: player.toPrimitives(),
         assailed: {
-          ...opponent.getProps(),
+          ...opponent.toPrimitives(),
           health: 0,
         },
         assaultResult: {
@@ -51,22 +93,6 @@ describe('Run fight', () => {
     fightGateway.feedOpponent(opponent)
     fightGateway.feedLogs(logs)
 
-    await store.dispatch(runFight('uuid-1'))
-
-    expect(store.getState()).toEqual({
-      ...initialState,
-      fightResult: {
-        winner: {
-          id: 'uuid-1',
-          ...player.getProps(),
-        },
-        looser: {
-          id: 'uuid-2',
-          ...opponent.getProps(),
-        },
-        logs,
-        draw: false,
-      },
-    })
-  })
+    return { player, opponent, logs }
+  }
 })

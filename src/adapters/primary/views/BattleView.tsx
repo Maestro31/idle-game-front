@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Character from '../../../core/models/Character'
 import { runFight } from '../../../core/usecases/fight/run-fight/runFight'
-import { findFightResult } from '../../../redux/selectors/battleSelectors'
+import {
+  findFightErrorMessage,
+  findFightFetching,
+  findFightResult,
+} from '../../../redux/selectors/battleSelectors'
 import CharacterPreview from '../components/battle/CharacterPreview'
 import LogList from '../components/battle/LogList'
 import HomeButton from '../components/HomeButton'
@@ -15,18 +19,29 @@ export default function ArenaView() {
   const { id } = useParams<{ id: string }>()
   const dispatch = useDispatch()
   const fightResult = useSelector(findFightResult(id))
+  const errorMessage = useSelector(findFightErrorMessage)
+  const fetching = useSelector(findFightFetching)
 
   useEffect(() => {
     dispatch(runFight(id))
   }, [dispatch, id])
 
-  if (!fightResult) {
+  if (errorMessage) {
+    return (
+      <PageContainer>
+        <p style={{ color: 'white' }}>{errorMessage}</p>
+        <HomeButton />
+      </PageContainer>
+    )
+  }
+
+  if (fetching || !fightResult) {
     return <div></div>
   }
 
   const { winner, looser, logs } = fightResult
-
   const colorStyle = { color: fightResult.statusColor }
+
   return (
     <PageContainer>
       <h1 style={colorStyle}>{fightResult.displayStatus}</h1>

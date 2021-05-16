@@ -55,7 +55,7 @@ export interface FightLogVM {
 export const findFightResult =
   (characterId: string) =>
   (state: AppState): FightResultVM | null => {
-    const fightResult = state.fightResult
+    const fightResult = state.fightResult.data
 
     if (!fightResult) return null
 
@@ -88,3 +88,8 @@ export const findFightResult =
       })),
     }
   }
+
+export const findFightErrorMessage = (state: AppState) =>
+  state.fightResult.errorMessage
+
+export const findFightFetching = (state: AppState) => state.fightResult.fetching

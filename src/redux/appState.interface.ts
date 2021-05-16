@@ -8,7 +8,11 @@ export interface AppState {
     errorMessage: string | null
     battleHistoriesByCharacterId: BattleHistoriesByCharacterId
   }
-  fightResult: FightResult | null
+  fightResult: {
+    data: FightResult | null
+    fetching: boolean
+    errorMessage: string | null
+  }
 }
 
 export interface AuthState {
