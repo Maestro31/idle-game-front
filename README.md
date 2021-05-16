@@ -4,3 +4,9 @@
 $ yarn install
 $ yarn start
 ```
+
+## Lancer les tests
+
+```
+$ yarn test
+```
