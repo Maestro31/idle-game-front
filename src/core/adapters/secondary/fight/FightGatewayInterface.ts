@@ -1,8 +1,8 @@
-import { CharacterDTO, CharacterProps } from '../../../models/Character'
+import { CharacterDTO } from '../../../models/Character'
 export interface AssaultLog {
   turn: number
-  assailant: CharacterProps
-  assailed: CharacterProps
+  assailant: CharacterDTO
+  assailed: CharacterDTO
   assaultResult: {
     attack: number
     damageTaken: number
@@ -17,4 +17,5 @@ export interface FightResult {
   winner: CharacterDTO
   looser: CharacterDTO
   logs: AssaultLog[]
+  draw: boolean
 }

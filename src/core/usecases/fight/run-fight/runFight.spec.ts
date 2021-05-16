@@ -55,16 +55,6 @@ describe('Run fight', () => {
 
     expect(store.getState()).toEqual({
       ...initialState,
-      character: {
-        ...initialState.character,
-        byId: {
-          ...initialState.character.byId,
-          'uuid-1': {
-            id: 'uuid-1',
-            ...player.getProps(),
-          },
-        },
-      },
       fightResult: {
         winner: {
           id: 'uuid-1',
@@ -75,6 +65,7 @@ describe('Run fight', () => {
           ...opponent.getProps(),
         },
         logs,
+        draw: false,
       },
     })
   })

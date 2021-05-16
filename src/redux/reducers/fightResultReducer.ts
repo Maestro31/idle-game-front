@@ -5,11 +5,14 @@ const fightResult = (
   state: FightResult | null = null,
   action: FightActionTypes
 ) => {
-  if (action.type === 'FIGHT_ENDED') {
-    return action.payload.fightResult
+  switch (action.type) {
+    case 'FIGHT_ENDED':
+      return action.payload.fightResult
+    case 'FIGHT_STARTED':
+      return null
+    default:
+      return state
   }
-
-  return state
 }
 
 export default fightResult

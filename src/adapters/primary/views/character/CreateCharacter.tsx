@@ -1,16 +1,16 @@
 import { useDispatch } from 'react-redux'
-import { createCharacter } from '../../../core/usecases/character/create-character/createCharacter'
-import useCharacterCreator from '../hooks/useCharacterCreator'
+import { createCharacter } from '../../../../core/usecases/character/create-character/createCharacter'
+import useCharacterCreator from '../../hooks/useCharacterCreator'
 import { useHistory } from 'react-router-dom'
-import CharacterDetails from '../components/character/CharacterDetails'
+import CharacterDetails from '../../components/character/CharacterDetails'
 import styled from '@emotion/styled'
 import {
   flexColumnStyle,
   inputTextStyle,
   secondaryByttonStyle,
-} from '../components/styles'
-import { PageContainer } from '../components/sharedComponents'
-import SkillForm from '../components/character/SkillForm'
+} from '../../components/styles'
+import { PageContainer } from '../../components/sharedComponents'
+import SkillForm from '../../components/character/SkillForm'
 
 export default function CreateCharacter() {
   const {

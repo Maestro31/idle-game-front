@@ -6,9 +6,9 @@ import { User } from '../../../redux/appState.interface'
 import InvalidCredentialsError from '../../../core/adapters/secondary/auth/InvalidCredentialsError'
 
 export default class InMemoryAuthGateway implements AuthGatewayInterface {
-  protected users: User[] = []
+  private users: User[] = []
 
-  protected usersLogged: User[] = []
+  private usersLogged: User[] = []
 
   async login(email: string, _: string): Promise<LoginResponse> {
     const user = this.users.find((user) => user.email === email)

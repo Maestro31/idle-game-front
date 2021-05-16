@@ -6,6 +6,7 @@ export interface AppState {
   character: {
     byId: CharactersById
     errorMessage: string | null
+    battleHistoriesByCharacterId: BattleHistoriesByCharacterId
   }
   fightResult: FightResult | null
 }
@@ -25,3 +26,14 @@ export interface User {
 export interface CharactersById {
   [key: string]: CharacterDTO
 }
+
+export interface BattleHistoriesByCharacterId {
+  [key: string]: BattleResult[]
+}
+
+export interface BattleResult {
+  opponent: CharacterDTO
+  status: BattleResultStatus
+}
+
+export type BattleResultStatus = 'won' | 'lost' | 'draw'

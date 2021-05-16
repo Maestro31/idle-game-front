@@ -4,10 +4,12 @@ import CharacterGatewayInterface, {
 } from '../../../core/adapters/secondary/character/CharacterGatewayInterface'
 import CharacterNotFoundError from '../../../core/adapters/secondary/character/CharacterNotFoundError'
 import Character from '../../../core/models/Character'
+import { BattleResult } from '../../../redux/appState.interface'
 export default class InMemoryCharacterGateway
   implements CharacterGatewayInterface
 {
-  protected characters: Character[] = []
+  private characters: Character[] = []
+  private battleResults: { [key: string]: BattleResult[] } = {}
   private lastArgs: any
 
   async retrieveCharacters(): Promise<Character[]> {
@@ -33,7 +35,11 @@ export default class InMemoryCharacterGateway
     )
   }
 
-  protected findCharacterById(id: string): Character {
+  async retrieveBattleResults(id: string): Promise<BattleResult[]> {
+    return this.battleResults[id]
+  }
+
+  private findCharacterById(id: string): Character {
     const character = this.characters.find((character) => character.id === id)
 
     if (!character) {
@@ -45,6 +51,10 @@ export default class InMemoryCharacterGateway
 
   feed(characters: Character[]) {
     this.characters = characters
+  }
+
+  feedBattleResults(battleResults: { [key: string]: BattleResult[] }) {
+    this.battleResults = battleResults
   }
 
   getLastArgs() {

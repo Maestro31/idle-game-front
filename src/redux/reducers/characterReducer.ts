@@ -1,6 +1,9 @@
 import { combineReducers } from 'redux'
 import { CharacterActionTypes } from '../../core/usecases/character/actionCreators'
-import { CharactersById } from '../appState.interface'
+import {
+  BattleHistoriesByCharacterId,
+  CharactersById,
+} from '../appState.interface'
 
 const initialState: CharactersById = {}
 
@@ -47,4 +50,23 @@ const errorMessage = (
   return state
 }
 
-export default combineReducers({ byId: characters, errorMessage })
+const battlehistoriesInitialState: BattleHistoriesByCharacterId = {}
+const battleHistoriesByCharacterId = (
+  state: BattleHistoriesByCharacterId = battlehistoriesInitialState,
+  action: CharacterActionTypes
+) => {
+  if (action.type === 'BATTLE_RESULTS_RETRIEVED') {
+    const { id, battleResults } = action.payload
+    return {
+      ...state,
+      [id]: battleResults,
+    }
+  }
+  return state
+}
+
+export default combineReducers({
+  byId: characters,
+  errorMessage,
+  battleHistoriesByCharacterId,
+})

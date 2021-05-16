@@ -5,7 +5,7 @@ import FightGatewayInterface, {
 import Character from '../../../core/models/Character'
 
 export default class InMemoryFightGateway implements FightGatewayInterface {
-  protected character!: Character
+  private character!: Character
   private opponent!: Character
   private logs: AssaultLog[] = []
 
@@ -40,6 +40,7 @@ export default class InMemoryFightGateway implements FightGatewayInterface {
         ...looser.getProps(),
       },
       logs,
+      draw: false,
     }
   }
 }

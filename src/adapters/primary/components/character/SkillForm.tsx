@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { flexColumnStyle } from '../styles'
 import { CharacterProps } from '../../../../core/models/Character'
 import { Skill } from '../../../../core/adapters/secondary/character/CharacterGatewayInterface'
-import useCharacterForm from '../../hooks/useCharacter'
+import useCharacterForm from '../../hooks/useCharacterForm'
 
 interface SkillFormProps {
   characterProps: CharacterProps

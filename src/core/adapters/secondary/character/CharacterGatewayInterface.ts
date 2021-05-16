@@ -1,3 +1,4 @@
+import { BattleResult } from '../../../../redux/appState.interface'
 import Character from '../../../models/Character'
 
 export type Skill = 'health' | 'attack' | 'defense' | 'magic'
@@ -14,4 +15,5 @@ export default interface CharacterGatewayInterface {
   createCharacter(payload: CreateCharacterPayload): Promise<void>
   incrementSkill(skill: Skill, characterId: string): Promise<void>
   deleteCharacter(id: string): Promise<void>
+  retrieveBattleResults(id: string): Promise<BattleResult[]>
 }

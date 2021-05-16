@@ -31,7 +31,7 @@ export const FormLayout = styled(Form)({
 export const PageContainer = styled.div({
   ...(flexColumnStyle as {}),
   alignItems: 'center',
-  height: '100%',
+  height: 'calc(100% - 58px)',
   boxSizing: 'border-box',
   color: 'white',
 })

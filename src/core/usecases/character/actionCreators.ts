@@ -1,3 +1,4 @@
+import { BattleResult } from '../../../redux/appState.interface'
 import { ActionsUnion, createAction } from '../../../redux/customActions'
 import Character from '../../models/Character'
 
@@ -13,6 +14,8 @@ export const CharacterActions = {
   characterUpdateFailed: (errorMessage: string) =>
     createAction('CHARACTER_ERROR', { errorMessage }),
   characterDeleted: (id: string) => createAction('CHARACTER_DELETED', { id }),
+  battleResultsRetrieved: (id: string, battleResults: BattleResult[]) =>
+    createAction('BATTLE_RESULTS_RETRIEVED', { id, battleResults }),
 }
 
 export type CharacterActionTypes = ActionsUnion<typeof CharacterActions>

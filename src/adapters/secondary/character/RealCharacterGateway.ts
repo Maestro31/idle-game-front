@@ -3,6 +3,7 @@ import CharacterGatewayInterface, {
   Skill,
 } from '../../../core/adapters/secondary/character/CharacterGatewayInterface'
 import Character from '../../../core/models/Character'
+import { BattleResult } from '../../../redux/appState.interface'
 import ApiGateway from '../ApiGateway'
 
 export default class RealCharacterGateway
@@ -13,8 +14,8 @@ export default class RealCharacterGateway
     super('characters')
   }
 
-  async retrieveCharacter(id: string): Promise<Character> {
-    const { data } = await this.client().get(`/${id}`)
+  async retrieveCharacter(characterId: string): Promise<Character> {
+    const { data } = await this.client().get(`/${characterId}`)
     return Character.fromPrimitives(data)
   }
 
@@ -31,7 +32,12 @@ export default class RealCharacterGateway
     await this.client().post(`/${characterId}/increment/${skill}`)
   }
 
-  async deleteCharacter(id: string): Promise<void> {
-    await this.client().delete(`/${id}`)
+  async deleteCharacter(characterId: string): Promise<void> {
+    await this.client().delete(`/${characterId}`)
+  }
+
+  async retrieveBattleResults(characterId: string): Promise<BattleResult[]> {
+    const { data } = await this.client().get(`/${characterId}/history`)
+    return data
   }
 }

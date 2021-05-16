@@ -26,6 +26,9 @@ export const buttonStyle: Interpolation<any> = {
   '&[disabled]': {
     opacity: '0.7',
   },
+  '&[disabled]:hover': {
+    cursor: 'default',
+  },
 }
 
 export const primaryButtonStyle: Interpolation<any> = {
