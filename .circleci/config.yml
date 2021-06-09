@@ -28,9 +28,6 @@ jobs:
       # If you are using yarn instead npm, remove the line above and uncomment the two lines below.
       - node/install-packages:
           pkg-manager: yarn 
-      - run:
-          name: Install dependencies
-          command: yarn install
           
       - run:
           name: Run tests
