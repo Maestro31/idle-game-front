@@ -1,4 +1,5 @@
-import { CharacterProps, Skill } from './character.interface'
+import { Skill } from '../core/adapters/secondary/character/CharacterGatewayInterface'
+import { CharacterProps } from './character.interface'
 import CharacterCreator from './CharacterCreator'
 
 describe('CharacterCreator', () => {
@@ -11,7 +12,7 @@ describe('CharacterCreator', () => {
   describe('create character', () => {
     it('should return a character with default skill points', () => {
       const props = characterCreator.createCharacterProps('John')
-      expect(characterCreator.createCharacterProps('John')).toEqual({
+      expect(props).toEqual({
         name: 'John',
         skillPoints: 12,
         health: 10,
